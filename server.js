@@ -4,6 +4,7 @@ import connection from './connection/connection.js'
 import { serverPort } from './config/config.js'
 
 import seedFuncion from './seed/seedFuncion.js'
+import seedSala from './seed/seedSala.js'
 
 const app = express();
 
@@ -29,4 +30,5 @@ connection.sync({ force: true })
             console.log("server OK http://localhost:" + serverPort);
         })
     })
+    .then(seedSala)
     .then(seedFuncion);
