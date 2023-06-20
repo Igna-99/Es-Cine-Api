@@ -3,6 +3,8 @@ import indexRoutes from './routes/indexRoutes.js'
 import connection from './connection/connection.js'
 import { serverPort } from './config/config.js'
 
+import seedFuncion from './seed/seedFuncion.js'
+
 const app = express();
 
 //middleweres
@@ -20,9 +22,11 @@ app.use((error, req, res, next) => {
 });
 
 
-connection.sync({ force: true }).then(() => {
-    app.listen(serverPort, () => {
-        //console.clear()
-        console.log("server OK http://localhost:" + serverPort);
+connection.sync({ force: true })
+    .then(() => {
+        app.listen(serverPort, () => {
+            //console.clear()
+            console.log("server OK http://localhost:" + serverPort);
+        })
     })
-});
+    .then(seedFuncion);

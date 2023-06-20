@@ -1,6 +1,7 @@
-import { Reserva } from "../Models/index.js";
+import { Reserva } from "../models/index.js";
 
 class ReservaController {
+    
     constructor() { }
 
     trearReservaDeUsuario = async (req, res, next) => {
@@ -8,7 +9,7 @@ class ReservaController {
             const { idUusario } = req.params;
 
             const result = await Reserva.findAll({
-                attributes: ["numeroSala", "numeroAsiento", "idPelicula", "horario", "idUusario"],
+                attributes: ["sala", "numeroAsiento", "horario", "idPelicula", "idUusario"],
                 where: {
                     idUusario
                 },
@@ -34,8 +35,8 @@ class ReservaController {
     crearReserva = async (req, res, next) => {
         try {
             const { idUusario } = req.params;
-            const { numeroSala, numeroAsiento, idPelicula, horario } = req.body
-            const result = await Reserva.create({ numeroSala, numeroAsiento, idPelicula, horario, idUusario })
+            const { sala, numeroAsiento, idPelicula, horario } = req.body
+            const result = await Reserva.create({ sala, numeroAsiento, horario, idPelicula, idUusario })
 
             if (!result) {
                 const error = new Error("ERROR AL CREAR LA RESERVA")
@@ -56,9 +57,9 @@ class ReservaController {
     eliminarReserva = async (req, res, next) => {
         try {
             const { idUusario } = req.params;
-            const { numeroSala, numeroAsiento, idPelicula, horario } = req.body
+            const { sala, numeroAsiento, idPelicula, horario } = req.body
             const result = await Reserva.destroy({
-                where: { numeroSala, numeroAsiento, idPelicula, horario, idUusario }
+                where: { sala, numeroAsiento, horario, idPelicula, idUusario }
             })
  
             if (!result) {

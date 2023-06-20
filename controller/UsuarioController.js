@@ -1,4 +1,4 @@
-import { Usuario } from "../Models/index.js"
+import { Usuario } from "../models/index.js";
 
 class UsuarioController {
 

@@ -1,39 +1,40 @@
 import { DataTypes as DT } from "sequelize";
 import connection from "../connection/connection.js";
 
+import Funcion from "./Funcion.js";
+
+
 const Reserva = connection.define("Reserva", {
 
-    numeroSala:{
+    sala: {
         type: DT.CHAR(1),
         allowNull: false,
-        foreignKey: true,
         primaryKey: true,
         validate: {
-            isUppercase: true, 
-        }
+            isAlpha: true,
+            isUppercase: true,
+            len:[1,1]
+        },
     },
 
-    numeroAsiento:{
+    numeroAsiento: {
         type: DT.INTEGER,
         allowNull: false,
-        foreignKey: true,
-        primaryKey: true,
+        primaryKey: true,  
     },
 
-    idPelicula:{
-        type: DT.INTEGER,
-        allowNull: false,
-        foreignKey: true,
-        primaryKey: true,
-    },
-    
-    horario:{
+    horario: {
         type: DT.TIME,
         allowNull: false,
         primaryKey: true,
     },
 
-    idUusario:{
+    idPelicula: {
+        type: DT.INTEGER,
+        allowNull: false,
+    },
+
+    idUusario: {
         type: DT.INTEGER,
         allowNull: false,
         foreignKey: true,
