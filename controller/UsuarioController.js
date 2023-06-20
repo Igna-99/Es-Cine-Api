@@ -68,12 +68,41 @@ class UsuarioController {
 
             res
                 .status(200)
-                .send({ success: true, message: "Usuario Creado Exitosamente" })
+                .send({ success: true, message: "Usuario Creado Exitosamente", result })
         } catch (error) {
 
             next(error)
         }
     };
+
+    borrarUsuario = async (req, res, next) => {
+        try {
+
+            const { id } = req.params;
+
+            const result = await Usuario.destroy({
+                where: {
+                    id
+                },
+            });
+
+            if (!result) {
+                const error = new Error(`el usuarion con ID ${id} no se encuntra en la base de datos`);
+                error.status = 400;
+                throw error;
+            } 
+
+            res
+                .status(200)
+                .send({ success: true, message: "Usuarios Borrado", result });
+
+        } catch (error) {
+
+            next(error);
+        }
+
+    };
+
 
 }
 
