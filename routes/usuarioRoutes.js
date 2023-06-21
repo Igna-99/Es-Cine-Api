@@ -13,9 +13,11 @@ usuarioRoutes.get("/", usuarioController.traerTodosLosUsuarios)
 
 usuarioRoutes.get("/:id", usuarioController.traerUsuarioPorId)
 
+usuarioRoutes.post("/login", usuarioController.login)
+
 usuarioRoutes.post("/", usuarioController.crearUsuario)
 
-usuarioRoutes.delete("/:id", usuarioController.borrarUsuario)
+usuarioRoutes.delete("/", usuarioController.delete)
 
 
 

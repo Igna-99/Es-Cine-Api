@@ -2,7 +2,7 @@ import { Usuario } from "../models/index.js";
 
 class UsuarioController {
 
-    constructor() {}
+    constructor() { }
 
     traerTodosLosUsuarios = async (req, res, next) => {
         try {
@@ -41,7 +41,7 @@ class UsuarioController {
                 const error = new Error(`el usuarion con ID ${id} no se encuntra en la base de datos`);
                 error.status = 400;
                 throw error;
-            } 
+            }
 
             res
                 .status(200)
@@ -56,7 +56,7 @@ class UsuarioController {
 
     crearUsuario = async (req, res, next) => {
         try {
-            
+
             const { nombre, apellido, email, contraseña } = req.body
             const result = await Usuario.create({ nombre, apellido, email, contraseña })
 
@@ -64,7 +64,7 @@ class UsuarioController {
                 const error = new Error("ERROR AL CREAR EL USUARIO")
                 error.status = 400;
                 throw error;
-            } 
+            }
 
             res
                 .status(200)
@@ -72,6 +72,90 @@ class UsuarioController {
         } catch (error) {
 
             next(error)
+        }
+    };
+
+    login = async (req, res, next) => {
+        try {
+
+            const { email, contraseña } = req.body;
+
+            const result = await Usuario.findOne({
+                where: {
+                    email,
+                }
+            });
+
+            if (!result) {
+                const error = new Error("El Email es incorrecto")
+                error.status = 400;
+                throw error;
+            }
+
+            const contraseñaCorrecta = await result.validarContraseña(contraseña)
+
+            if (!contraseñaCorrecta) {
+                const error = new Error("La Contraseña es incorrecta")
+                error.status = 400;
+                throw error;
+            }
+
+            res
+                .status(200)
+                .send({ success: true, message: "Usuario Creado Exitosamente", result })
+        } catch (error) {
+
+            next(error)
+        }
+    };
+
+    delete = async (req, res, next) => {
+        try {
+
+            const { email, contraseña } = req.body;
+
+            const result = await Usuario.findOne({
+                where: {
+                    email,
+                }
+            });
+
+            if (!result) {
+                const error = new Error("El Email es incorrecto");
+                error.status = 400;
+                throw error;
+            }
+
+            const contraseñaCorrecta = await result.validarContraseña(contraseña);
+
+            if (!contraseñaCorrecta) {
+                const error = new Error("La Contraseña es incorrecta");
+                error.status = 400;
+                throw error;
+            }
+
+
+            const result2 = await Usuario.destroy({
+                where: {
+                    email
+                },
+            });
+
+            if (!result) {
+                const error = new Error(`ERROR FATAL`);
+                error.status = 400;
+                throw error;
+            }
+
+
+            res
+                .status(200)
+                .send({ success: true, message: "El usuario a sido eliminado", result2 });
+
+
+        } catch (error) {
+
+            next(error);
         }
     };
 
@@ -90,7 +174,7 @@ class UsuarioController {
                 const error = new Error(`el usuarion con ID ${id} no se encuntra en la base de datos`);
                 error.status = 400;
                 throw error;
-            } 
+            }
 
             res
                 .status(200)
