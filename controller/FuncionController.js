@@ -1,6 +1,6 @@
 import { Funcion } from "../models/index.js";
 
-class FuncionesController {
+class FuncionController {
     
     constructor() { }
 
@@ -105,4 +105,4 @@ class FuncionesController {
 
 };
 
-export default FuncionesController;
+export default FuncionController;

@@ -1,18 +1,18 @@
 import { Router } from "express";
-import FuncionesController from "../controller/FuncionesController.js";
+import FuncionController from "../controller/FuncionController.js";
 
-const funcionesController = new FuncionesController()
+const funcionController = new FuncionController()
 
 const funcionRoutes = Router();
 
 
-funcionRoutes.get("/",funcionesController.traerTodasLasFunciones)
+funcionRoutes.get("/",funcionController.traerTodasLasFunciones)
 
-funcionRoutes.get("/sala/:sala",funcionesController.traerFuncionesDeUnaSala)
+funcionRoutes.get("/sala/:sala",funcionController.traerFuncionesDeUnaSala)
 
-funcionRoutes.get("/horario/:horario",funcionesController.traerFuncionesDeUnHorario)
+funcionRoutes.get("/horario/:horario",funcionController.traerFuncionesDeUnHorario)
 
-funcionRoutes.get("/pelicula/:idPelicula",funcionesController.traerFuncionesDeUnaPelicula)
+funcionRoutes.get("/pelicula/:idPelicula",funcionController.traerFuncionesDeUnaPelicula)
 
 
 export default funcionRoutes
