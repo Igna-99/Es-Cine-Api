@@ -5,6 +5,9 @@ import { serverPort } from './config/config.js'
 
 import seedFuncion from './seed/seedFuncion.js'
 import seedSala from './seed/seedSala.js'
+import seedPelicula from './seed/seedPelicula.js'
+
+import cors from 'cors'
 
 const app = express();
 
@@ -12,6 +15,9 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+
+app.use(cors())
 
 app.use(indexRoutes);
 
@@ -31,4 +37,5 @@ connection.sync({ force: true })
         })
     })
     .then(seedSala)
+    .then(seedPelicula)
     .then(seedFuncion);

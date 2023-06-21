@@ -103,6 +103,6 @@ class FuncionesController {
         }
     };
 
-}
+};
 
 export default FuncionesController;
