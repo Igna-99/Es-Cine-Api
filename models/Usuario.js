@@ -12,6 +12,13 @@ class Usuario extends Model {
 }
 
 Usuario.init({
+
+  idUsuario: {
+    type: DataTypes.INTEGER,
+    primaryKey:true,
+    autoIncrement:true,
+  },
+
   nombre: {
     type: DataTypes.STRING(20),
     allowNull: false,
@@ -20,6 +27,7 @@ Usuario.init({
       isAlpha: true
     },
   },
+
   apellido: {
     type: DataTypes.STRING(20),
     allowNull: false,
@@ -29,6 +37,7 @@ Usuario.init({
     },
 
   },
+
   email: {
     type: DataTypes.STRING(20),
     allowNull: false,
@@ -38,6 +47,7 @@ Usuario.init({
       isEmail: true,
     },
   },
+
   contraseña: {
     type: DataTypes.STRING(),
     allowNull: false
