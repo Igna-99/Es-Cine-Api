@@ -4,24 +4,30 @@ import connection from "../connection/connection.js";
 class Funcion extends Model { }
 
 Funcion.init({
+
+    idFuncion:{
+        type: DataTypes.INTEGER,
+        primaryKey:true,
+        autoIncrement:true,
+    }, 
+    
+    idPelicula:{
+        type: DT.INTEGER,
+        allowNull: false,
+    },
+
     sala:{
         type: DT.CHAR(1),
         allowNull: false,
-        primaryKey: true,
         validate: {
             isAlpha: true,
             isUppercase: true,
             len:[1,1]
         }
     },    
+
     horario:{
         type: DT.TIME,
-        allowNull: false,
-        primaryKey: true,
-    },
-    
-    idPelicula:{
-        type: DT.INTEGER,
         allowNull: false,
     },
 
