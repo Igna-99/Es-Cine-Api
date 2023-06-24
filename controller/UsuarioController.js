@@ -102,7 +102,7 @@ class UsuarioController {
 
             res
                 .status(200)
-                .send({ success: true, message: "Usuario Creado Exitosamente", result })
+                .send({ success: true, message: "Usuario Logeado Exitosamente", result })
         } catch (error) {
 
             next(error)
