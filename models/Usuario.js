@@ -1,4 +1,4 @@
-import { DataTypes, Model } from "sequelize";
+import { DataTypes as DT, Model } from "sequelize";
 import connection from "../connection/connection.js";
 import bcrypt from "bcrypt";
 
@@ -8,19 +8,18 @@ class Usuario extends Model {
     return await bcrypt.compare(contraseña, this.contraseña);
   }
 
-
 }
 
 Usuario.init({
 
   idUsuario: {
-    type: DataTypes.INTEGER,
+    type: DT.INTEGER,
     primaryKey:true,
     autoIncrement:true,
   },
 
   nombre: {
-    type: DataTypes.STRING(20),
+    type: DT.STRING(20),
     allowNull: false,
 
     validate: {
@@ -29,7 +28,7 @@ Usuario.init({
   },
 
   apellido: {
-    type: DataTypes.STRING(20),
+    type: DT.STRING(20),
     allowNull: false,
 
     validate: {
@@ -39,7 +38,7 @@ Usuario.init({
   },
 
   email: {
-    type: DataTypes.STRING(20),
+    type: DT.STRING(20),
     allowNull: false,
     unique: true,
 
@@ -49,12 +48,12 @@ Usuario.init({
   },
 
   contraseña: {
-    type: DataTypes.STRING(),
+    type: DT.STRING(),
     allowNull: false
   },
 
   salt: {
-    type: DataTypes.STRING(),
+    type: DT.STRING(),
   },
 
 }, {

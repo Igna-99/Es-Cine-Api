@@ -6,18 +6,18 @@ const seedFuncion = async () => {
 
         await Funcion.bulkCreate([
             {
-                sala: 'A',
                 idPelicula: 6585,
+                sala: 'A',
                 horario: '21:30'
             },
             {
-                sala: 'B',
                 idPelicula: 6964,
+                sala: 'B',
                 horario: '21:30'
             },
             {
-                sala: 'C',
                 idPelicula: 4200,
+                sala: 'C',
                 horario: '21:30'
             }
         ]);

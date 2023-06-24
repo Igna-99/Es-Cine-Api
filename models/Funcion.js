@@ -6,7 +6,7 @@ class Funcion extends Model { }
 Funcion.init({
 
     idFuncion:{
-        type: DataTypes.INTEGER,
+        type: DT.INTEGER,
         primaryKey:true,
         autoIncrement:true,
     }, 
@@ -22,8 +22,8 @@ Funcion.init({
         validate: {
             isAlpha: true,
             isUppercase: true,
-            len:[1,1]
-        }
+            len: [1, 1]
+        },
     },    
 
     horario:{

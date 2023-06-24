@@ -7,11 +7,10 @@ import Funcion from "./Funcion.js";
 const Reserva = connection.define("Reserva", {
 
     idReserva:{
-        type: DataTypes.INTEGER,
+        type: DT.INTEGER,
         primaryKey:true,
         autoIncrement:true,
     }, 
-
 
     idFuncion: {
         type: DT.INTEGER,
@@ -24,6 +23,13 @@ const Reserva = connection.define("Reserva", {
         allowNull: false,
         foreignKey: true,
     },
+
+    idAsiento: {
+        type: DT.INTEGER,
+        allowNull: false,
+        foreignKey: true,
+    },
+
 
 }, {
     timestamps: false

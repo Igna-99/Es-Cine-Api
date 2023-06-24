@@ -7,7 +7,7 @@ class UsuarioController {
     traerTodosLosUsuarios = async (req, res, next) => {
         try {
             const result = await Usuario.findAll({
-                attributes: ["id", "nombre", "apellido", "email", "contraseña"]
+                attributes: ["idUsuario", "nombre", "apellido", "email", "contraseña"]
             });
 
             if (result.length == 0) {
@@ -28,17 +28,17 @@ class UsuarioController {
     traerUsuarioPorId = async (req, res, next) => {
         try {
 
-            const { id } = req.params;
+            const { idUsuario } = req.params;
 
             const result = await Usuario.findOne({
-                attributes: ["id", "nombre", "apellido", "email", "contraseña"],
+                attributes: ["idUsuario", "nombre", "apellido", "email", "contraseña"],
                 where: {
-                    id
+                    idUsuario
                 },
             });
 
             if (!result) {
-                const error = new Error(`el usuarion con ID ${id} no se encuntra en la base de datos`);
+                const error = new Error(`el usuarion con ID ${idUsuario} no se encuntra en la base de datos`);
                 error.status = 400;
                 throw error;
             }
@@ -61,7 +61,7 @@ class UsuarioController {
             const result = await Usuario.create({ nombre, apellido, email, contraseña })
 
             if (!result) {
-                const error = new Error("ERROR AL CREAR EL USUARIO")
+                const error = new Error("Error al crear el Usuario")
                 error.status = 400;
                 throw error;
             }
@@ -159,19 +159,21 @@ class UsuarioController {
         }
     };
 
+
+    //metodo viejo, fue remplazado por DELETE
     borrarUsuario = async (req, res, next) => {
         try {
 
-            const { id } = req.params;
+            const { idUsuario } = req.params;
 
             const result = await Usuario.destroy({
                 where: {
-                    id
+                    idUsuario
                 },
             });
 
             if (!result) {
-                const error = new Error(`el usuarion con ID ${id} no se encuntra en la base de datos`);
+                const error = new Error(`el usuarion con ID ${idUsuario} no se encuntra en la base de datos`);
                 error.status = 400;
                 throw error;
             }
