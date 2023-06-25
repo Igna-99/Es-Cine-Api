@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 
 class Usuario extends Model {
 
-  async validarContraseña(contraseña){
+  async validarContraseña(contraseña) {
     return await bcrypt.compare(contraseña, this.contraseña);
   }
 
@@ -14,8 +14,8 @@ Usuario.init({
 
   idUsuario: {
     type: DT.INTEGER,
-    primaryKey:true,
-    autoIncrement:true,
+    primaryKey: true,
+    autoIncrement: true,
   },
 
   nombre: {
@@ -23,7 +23,9 @@ Usuario.init({
     allowNull: false,
 
     validate: {
-      isAlpha: true
+      isAlpha: {
+        msg: "El Nombre debe ser AlphaNumerico"
+      }
     },
   },
 
@@ -32,18 +34,24 @@ Usuario.init({
     allowNull: false,
 
     validate: {
-      isAlpha: true
+      isAlpha: {
+        msg: "El Apellido debe ser AlphaNumerico"
+      }
     },
 
   },
 
   email: {
-    type: DT.STRING(20),
+    type: DT.STRING(40),
     allowNull: false,
-    unique: true,
+    unique: {
+      msg: "El Email ingresado ya esta Registrado"
+    },
 
     validate: {
-      isEmail: true,
+      isEmail: {
+        msg: "El Email ingresado no tiene un formato correcto"
+      },
     },
   },
 

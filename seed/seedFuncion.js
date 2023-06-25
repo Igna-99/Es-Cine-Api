@@ -6,20 +6,25 @@ const seedFuncion = async () => {
 
         await Funcion.bulkCreate([
             {
-                idPelicula: 6585,
+                idPelicula: 569094,
                 sala: 'A',
                 horario: '21:30'
             },
             {
-                idPelicula: 6964,
+                idPelicula: 713704,
                 sala: 'B',
                 horario: '21:30'
             },
             {
-                idPelicula: 4200,
+                idPelicula: 315162,
                 sala: 'C',
                 horario: '21:30'
-            }
+            },
+            {
+                idPelicula: 447277,
+                sala: 'A',
+                horario: '23:30'
+            },
         ]);
 
     } catch (error) {

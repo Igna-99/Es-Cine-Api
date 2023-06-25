@@ -58,6 +58,14 @@ class UsuarioController {
         try {
 
             const { nombre, apellido, email, contraseña } = req.body
+
+            
+            if (contraseña.length < 4) {
+                const error = new Error("La contraseña debe tener mas de 4 caracteres")
+                error.status = 400;
+                throw error;
+            }
+
             const result = await Usuario.create({ nombre, apellido, email, contraseña })
 
             if (!result) {
