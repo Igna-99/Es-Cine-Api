@@ -7,11 +7,11 @@ class FuncionController {
     traerTodasLasFunciones = async (req, res, next) => {
         try {
             const result = await Funcion.findAll({
-                attributes: ["sala", "horario", "idPelicula"]
+                attributes: ['idFuncion', "sala", "horario", "idPelicula"]
             });
 
             if (result.length == 0) {
-                const error = new Error("No Funciones Programadas");
+                const error = new Error("no hay Funciones cargadas");
                 error.status = 400
                 throw error
             }
@@ -30,14 +30,14 @@ class FuncionController {
             const { sala } = req.params;
 
             const result = await Funcion.findAll({
-                attributes: ["sala", "horario", "idPelicula"],
+                attributes: ['idFuncion', "sala", "horario", "idPelicula"],
                 where: {
                     sala
                 },
             });
 
             if (result.length == 0) {
-                const error = new Error("No Funciones Programadas en sala " + sala);
+                const error = new Error("no hay Funciones cargadas para sala " + sala);
                 error.status = 400
                 throw error
             }
@@ -56,7 +56,7 @@ class FuncionController {
             const { horario } = req.params;
 
             const result = await Funcion.findAll({
-                attributes: ["sala", "horario", "idPelicula"],
+                attributes: ['idFuncion', "sala", "horario", "idPelicula"],
                 where: {
                     horario
                 },
@@ -82,7 +82,7 @@ class FuncionController {
             const { idPelicula } = req.params;
 
             const result = await Funcion.findAll({
-                attributes: ["sala", "horario", "idPelicula"],
+                attributes: ['idFuncion', "sala", "horario", "idPelicula"],
                 where: {
                     idPelicula
                 },

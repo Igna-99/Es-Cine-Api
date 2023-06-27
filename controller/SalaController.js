@@ -10,7 +10,7 @@ class SalaController {
                 attributes: ["sala", "capacidad"],
                 include: {
                     model: Asiento,
-                    attributes: ['numeroAsiento','reservado'],
+                    attributes: ['numeroAsiento'],
                 }
 
             });
@@ -38,7 +38,7 @@ class SalaController {
                 attributes: ["sala", "capacidad"],
                 include: {
                     model: Asiento,
-                    attributes: ['numeroAsiento','reservado'],
+                    attributes: ['numeroAsiento'],
                 },
                 where: {
                     sala
@@ -47,7 +47,7 @@ class SalaController {
             });
 
             if (result.length == 0) {
-                const error = new Error("salas cargadas aun");
+                const error = new Error("no hay salas cargadas");
                 error.status = 400
                 throw error
             }

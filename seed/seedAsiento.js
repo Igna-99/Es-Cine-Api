@@ -6,40 +6,40 @@ const seedAsiento = async () => {
 
         await Asiento.bulkCreate([
             {
-                sala: 'A',
                 numeroAsiento: 1,
-            },
-            {
                 sala: 'A',
-                numeroAsiento: 2,
             },
             {
+                numeroAsiento: 2,
                 sala: 'A',
-                numeroAsiento: 3,
             },
             {
-                sala: 'B',
+                numeroAsiento: 3,
+                sala: 'A',
+            },
+            {
                 numeroAsiento: 1,
+                sala: 'B',
             },
             {
-                sala: 'B',
                 numeroAsiento: 2,
-            },
-            {
                 sala: 'B',
-                numeroAsiento: 3,
             },
             {
-                sala: 'C',
+                numeroAsiento: 3,
+                sala: 'B',
+            },
+            {
                 numeroAsiento: 1,
+                sala: 'C',
             },
             {
-                sala: 'C',
                 numeroAsiento: 2,
+                sala: 'C',
             },
             {
-                sala: 'C',
                 numeroAsiento: 3,
+                sala: 'C',
             },
         ]);
 

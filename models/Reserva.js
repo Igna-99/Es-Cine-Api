@@ -6,39 +6,30 @@ import Funcion from "./Funcion.js";
 
 const Reserva = connection.define("Reserva", {
 
-    sala: {
-        type: DT.CHAR(1),
-        allowNull: false,
-        primaryKey: true,
-        validate: {
-            isAlpha: true,
-            isUppercase: true,
-            len:[1,1]
-        },
-    },
-
-    numeroAsiento: {
+    idReserva:{
         type: DT.INTEGER,
-        allowNull: false,
-        primaryKey: true,  
-    },
+        primaryKey:true,
+        autoIncrement:true,
+    }, 
 
-    horario: {
-        type: DT.TIME,
-        allowNull: false,
-        primaryKey: true,
-    },
-
-    idPelicula: {
-        type: DT.INTEGER,
-        allowNull: false,
-    },
-
-    idUusario: {
+    idFuncion: {
         type: DT.INTEGER,
         allowNull: false,
         foreignKey: true,
     },
+
+    idUsuario: {
+        type: DT.INTEGER,
+        allowNull: false,
+        foreignKey: true,
+    },
+
+    idAsiento: {
+        type: DT.INTEGER,
+        allowNull: false,
+        foreignKey: true,
+    },
+
 
 }, {
     timestamps: false
