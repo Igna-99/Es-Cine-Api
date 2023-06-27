@@ -61,9 +61,32 @@ class SalaController {
         }
     };
 
+    actualizarAsientos = async (req, res, next) => {
+    try {
+      console.log(req.body);
+      const { asientosIds } = req.body.requestData;
+      const { sala } = req.params;
 
+      console.log(`actualizo ${sala} y ${asientosIds}`);
 
+      for (let asiento of asientosIds) {
+        await Asiento.update(
+          { reservado: true },
+          {
+            where: {
+              numeroAsiento: asiento,
+              sala: sala,
+            },
+          }
+        );
+      }
 
+      res.status(200).json({ message: "Asientos actualizados correctamente" });
+    } catch (error) {
+      console.log(error);
+      next(error);
+    }
+  };
 
 };
 

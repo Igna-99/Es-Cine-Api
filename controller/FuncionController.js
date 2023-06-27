@@ -103,6 +103,19 @@ class FuncionController {
         }
     };
 
+    crearFuncion = async (req, res, next) => {
+        try {
+          const result = await Funcion.create({
+            sala: req.body.sala,
+            horario: req.body.horario,
+            idPelicula: req.body.idPelicula,
+          });
+          res.status(200).send();
+        } catch (e) {
+          next(e);
+        }
+    };
+
 };
 
 export default FuncionController;

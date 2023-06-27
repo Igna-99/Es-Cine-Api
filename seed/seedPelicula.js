@@ -14,6 +14,9 @@ const seedPelicula = async () => {
             {
                 idPelicula: 4200
             },
+            {
+                idPelicula: 569094
+            },
         ]);
 
     } catch (error) {

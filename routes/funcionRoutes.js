@@ -14,5 +14,6 @@ funcionRoutes.get("/horario/:horario",funcionController.traerFuncionesDeUnHorari
 
 funcionRoutes.get("/pelicula/:idPelicula",funcionController.traerFuncionesDeUnaPelicula)
 
+funcionRoutes.post("/", funcionController.crearFuncion);
 
 export default funcionRoutes
