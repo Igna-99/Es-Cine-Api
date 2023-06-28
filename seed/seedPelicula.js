@@ -21,9 +21,6 @@ const seedPelicula = async () => {
                 idPelicula: 447277
                 //la sirenita 2023
             },
-            {
-                idPelicula: 569094
-            },
         ]);
 
     } catch (error) {
