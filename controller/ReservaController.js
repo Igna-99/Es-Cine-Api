@@ -46,7 +46,31 @@ class ReservaController {
         try {
             const { idUsuario } = req.params;
             const { IdFuncion, idAsiento } = req.body
-            console.log(req.body)
+
+            
+            // no se si esto esta bien, preguntar
+
+            const auxAsiento = await Asiento.findOne({
+                where:{
+                    idAsiento
+                }
+            })
+            const auxFuncion = await Funcion.findOne({
+                where:{
+                    IdFuncion
+                }
+            })
+
+            if( auxAsiento.sala != auxFuncion.sala ) {
+                const error = new Error("Error, El asiento Seleccionado no es de la misma sala que la funcion")
+                error.status = 401;
+                throw error;
+            }
+
+
+            //
+
+
             const result = await Reserva.create({
                 idFuncion: parseInt(IdFuncion),
                 idAsiento: parseInt(idAsiento),
