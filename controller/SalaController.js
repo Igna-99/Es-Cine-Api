@@ -88,6 +88,26 @@ class SalaController {
     }
   };
 
+  crearSala = async (req, res, next) => {
+    try {
+      const { sala, capacidad } = req.body;
+      console.log(req.body);
+      if (capacidad.length >= 3 || capacidad.length < 1) {
+        const error = new Error("La capacidad tiene que ser menor a 30 y mayor a 0")
+        error.status = 400;
+        throw error;
+      }
+      const result = await Sala.create({ sala, capacidad })
+      res
+      .status(200)
+      .send({ success: true, message: "Sala Creada Exitosamente", result })
+    } catch (error) {
+      next(error);
+      console.log(error);
+      console.log('No se puede crear la sala')
+    }
+  }
+
 };
 
 export default SalaController;

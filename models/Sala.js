@@ -21,7 +21,6 @@ const Sala = connection.define("Sala", {
             max: 30,
             min: 1,
         },
-
     }
 
 }, {

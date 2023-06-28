@@ -51,7 +51,6 @@ class ReservaController {
                 idFuncion: parseInt(IdFuncion),
                 idAsiento: parseInt(idAsiento),
                 idUsuario: parseInt(idUsuario),
-
             })
 
             if (!result) {

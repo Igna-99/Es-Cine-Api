@@ -8,7 +8,6 @@ const connection = new Sequelize(dbName, username, password, {
     port,
 });
 
-
 try {
     await connection.authenticate();
     console.log('Connection has been established successfully.');

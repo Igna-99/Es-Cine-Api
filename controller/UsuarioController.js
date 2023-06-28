@@ -216,6 +216,7 @@ class UsuarioController {
               );
             res.status(200).json({ message: "Usuario actualizados correctamente" });
         } catch(error) {
+            next(error);
             console.log(error)
             console.log('No se puede modificar el usuario')
         }
