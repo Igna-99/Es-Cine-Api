@@ -7,14 +7,13 @@ class UsuarioController {
     traerTodosLosUsuarios = async (req, res, next) => {
         try {
             const result = await Usuario.findAll({
-                attributes: ["idUsuario", "nombre", "apellido", "email", "contraseña", "rolId" ],
+                attributes: ["idUsuario", "nombre", "apellido", "email", "contraseña"],
                 include: [
                     {
-                      model: Rol,
-                      attributes: ["rol"],
-                      as: "rol",
+                        model: Rol,
+                        attributes: ["rol"],
                     },
-                ]
+                ],
             });
 
             if (result.length == 0) {
@@ -38,7 +37,13 @@ class UsuarioController {
             const { idUsuario } = req.params;
 
             const result = await Usuario.findOne({
-                attributes: ["idUsuario", "nombre", "apellido", "email", "contraseña", "rolId"],
+                attributes: ["idUsuario", "nombre", "apellido", "email", "contraseña"],
+                include: [
+                    {
+                        model: Rol,
+                        attributes: ["rol"],
+                    },
+                ],
                 where: {
                     idUsuario
                 },
@@ -64,16 +69,21 @@ class UsuarioController {
     crearUsuario = async (req, res, next) => {
         try {
 
-            const { nombre, apellido, email, contraseña, rolId } = req.body
+            const { nombre, apellido, email, contraseña } = req.body
 
-            
+
             if (contraseña.length < 4) {
                 const error = new Error("La contraseña debe tener mas de 4 caracteres")
                 error.status = 400;
                 throw error;
             }
 
-            const result = await Usuario.create({ nombre, apellido, email, contraseña, rolId })
+            const result = await Usuario.create({
+                nombre,
+                apellido,
+                email,
+                contraseña,
+            })
 
             if (!result) {
                 const error = new Error("Error al crear el Usuario")
@@ -174,7 +184,6 @@ class UsuarioController {
         }
     };
 
-
     //metodo viejo, fue remplazado por DELETE
     borrarUsuario = async (req, res, next) => {
         try {
@@ -204,25 +213,35 @@ class UsuarioController {
 
     };
 
-    modificarUsuario = async (req,res,next) => {
+    modificarUsuario = async (req, res, next) => {
+
         try {
-            console.log(req.body);
-            const  usuario  = req.body;
+
+            const { nombre, apellido, email, contraseña } = req.body;
+
             const { idUsuario } = req.params;
+
             await Usuario.update(
-                {   nombre: usuario.nombre,
-                    apellido: usuario.apellido,
-                    email: usuario.email,
-                    contraseña: usuario.contrasena,
-                     },
                 {
-                  where: {
-                    idUsuario: idUsuario
-                  },
+                    nombre,
+                    apellido,
+                    email,
+                    contraseña,
+                },
+                {
+                    where: {
+                        idUsuario
+                    },
+                    individualHooks: true,
                 }
-              );
+            );
+
+            // falta una forma de saber si fallo o no
+
+
             res.status(200).json({ message: "Usuario actualizados correctamente" });
-        } catch(error) {
+        } catch (error) {
+
             next(error);
             console.log(error)
             console.log('No se puede modificar el usuario')

@@ -10,6 +10,8 @@ const reservaController = new ReservaController()
 const usuarioRoutes = Router();
 
 
+//
+
 usuarioRoutes.get("/:idUsuario", usuarioController.traerUsuarioPorId)
 
 usuarioRoutes.get("/", usuarioController.traerTodosLosUsuarios)
@@ -18,12 +20,15 @@ usuarioRoutes.post("/login", usuarioController.login)
 
 usuarioRoutes.post("/", usuarioController.crearUsuario)
 
+usuarioRoutes.put("/:idUsuario", usuarioController.modificarUsuario)
+
 usuarioRoutes.delete("/", usuarioController.delete)
+
+//
 
 usuarioRoutes.get("/:idUsuario/reserva",reservaController.trearReservaDeUsuario)
 
 usuarioRoutes.post("/:idUsuario/reserva", reservaController.crearReserva)
 
-usuarioRoutes.put("/:idUsuario", usuarioController.modificarUsuario)
 
 export default usuarioRoutes

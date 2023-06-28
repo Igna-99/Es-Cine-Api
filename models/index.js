@@ -7,6 +7,17 @@ import Asiento from "./Asiento.js";
 import Rol from "./Rol.js"
 
 
+
+// Relacion Rol(1) y Usuario(M)
+
+Rol.hasMany(Usuario, {
+    foreignKey: "idRol",
+});
+Usuario.belongsTo(Rol, {
+    foreignKey: "idRol",
+});
+
+
 // Relacion Usuario(1) y Reservas(M)
 
 Usuario.hasMany(Reserva, {
@@ -85,13 +96,6 @@ Asiento.belongsTo(Sala, {
     // onDelete: "RESTRICT",
 });
 
-Rol.hasMany(Usuario, {
-    foreignKey: "rolId",
-  });
-  Usuario.belongsTo(Rol, {
-    foreignKey: "rolId",
-    as: "rol",
-  });
 
 
 export { Usuario, Reserva, Funcion, Sala, Pelicula, Asiento, Rol }
