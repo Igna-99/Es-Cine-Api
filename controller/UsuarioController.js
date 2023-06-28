@@ -197,6 +197,29 @@ class UsuarioController {
 
     };
 
+    modificarUsuario = async (req,res,next) => {
+        try {
+            console.log(req.body);
+            const  usuario  = req.body;
+            const { idUsuario } = req.params;
+            await Usuario.update(
+                {   nombre: usuario.nombre,
+                    apellido: usuario.apellido,
+                    email: usuario.email,
+                    contraseña: usuario.contrasena,
+                     },
+                {
+                  where: {
+                    idUsuario: idUsuario
+                  },
+                }
+              );
+            res.status(200).json({ message: "Usuario actualizados correctamente" });
+        } catch(error) {
+            console.log(error)
+            console.log('No se puede modificar el usuario')
+        }
+    }
 
 }
 

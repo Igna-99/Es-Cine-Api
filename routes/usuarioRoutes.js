@@ -14,23 +14,16 @@ usuarioRoutes.get("/:idUsuario", usuarioController.traerUsuarioPorId)
 
 usuarioRoutes.get("/", usuarioController.traerTodosLosUsuarios)
 
-
 usuarioRoutes.post("/login", usuarioController.login)
 
 usuarioRoutes.post("/", usuarioController.crearUsuario)
 
-
 usuarioRoutes.delete("/", usuarioController.delete)
-
-
 
 usuarioRoutes.get("/:idUsuario/reserva",reservaController.trearReservaDeUsuario)
 
 usuarioRoutes.post("/:idUsuario/reserva", reservaController.crearReserva)
 
-
-//usuarioRoutes.delete("/:idUsuario/reserva", reservaController.eliminarReserva)
-
-
+usuarioRoutes.put("/:idUsuario", usuarioController.modificarUsuario)
 
 export default usuarioRoutes
