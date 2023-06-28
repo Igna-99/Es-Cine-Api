@@ -158,7 +158,7 @@ class UsuarioController {
 
             res
                 .status(200)
-                .send({ success: true, message: "El usuario a sido eliminado", result2 });
+                .send({ success: true, message: "El usuario ha sido eliminado", result2 });
 
 
         } catch (error) {

@@ -1,7 +1,7 @@
 import { Funcion } from "../models/index.js";
 
 class FuncionController {
-    
+
     constructor() { }
 
     traerTodasLasFunciones = async (req, res, next) => {
@@ -105,14 +105,27 @@ class FuncionController {
 
     crearFuncion = async (req, res, next) => {
         try {
-          const result = await Funcion.create({
-            sala: req.body.sala,
-            horario: req.body.horario,
-            idPelicula: req.body.idPelicula,
-          });
-          res.status(200).send();
-        } catch (e) {
-          next(e);
+
+            const { sala, horario, idPelicula } = req.body;
+
+            const result = await Funcion.create({
+                sala,
+                horario,
+                idPelicula,
+            });
+
+            if (!result) {
+                const error = new Error("Error al crear la Funcion");
+                error.status = 400;
+                throw error;
+            }
+
+            res
+                .status(200)
+                .send({ success: true, message: "Funcion Creada Exitosamente", result });
+
+        } catch (error) {
+            next(error);
         }
     };
 
