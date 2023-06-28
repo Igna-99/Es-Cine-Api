@@ -3,7 +3,8 @@ import Reserva from "./Reserva.js";
 import Funcion from "./Funcion.js";
 import Sala from "./Sala.js";
 import Pelicula from "./Pelicula.js";
-import Asiento from "./Asiento.js"
+import Asiento from "./Asiento.js";
+import Rol from "./Rol.js"
 
 
 // Relacion Usuario(1) y Reservas(M)
@@ -84,12 +85,13 @@ Asiento.belongsTo(Sala, {
     // onDelete: "RESTRICT",
 });
 
+Rol.hasMany(Usuario, {
+    foreignKey: "rolId",
+  });
+  Usuario.belongsTo(Rol, {
+    foreignKey: "rolId",
+    as: "rol",
+  });
 
 
-
-
-
-
-
-
-export { Usuario, Reserva, Funcion, Sala, Pelicula, Asiento }
+export { Usuario, Reserva, Funcion, Sala, Pelicula, Asiento, Rol }

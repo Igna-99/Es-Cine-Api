@@ -60,6 +60,11 @@ Usuario.init({
     allowNull: false
   },
 
+  rolId: {
+    type: DT.INTEGER(),
+    defaultValue: 2,
+  },
+
   salt: {
     type: DT.STRING(),
   },

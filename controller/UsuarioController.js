@@ -1,4 +1,4 @@
-import { Usuario } from "../models/index.js";
+import { Usuario, Rol } from "../models/index.js";
 
 class UsuarioController {
 
@@ -7,7 +7,14 @@ class UsuarioController {
     traerTodosLosUsuarios = async (req, res, next) => {
         try {
             const result = await Usuario.findAll({
-                attributes: ["idUsuario", "nombre", "apellido", "email", "contraseña"]
+                attributes: ["idUsuario", "nombre", "apellido", "email", "contraseña", "rolId" ],
+                include: [
+                    {
+                      model: Rol,
+                      attributes: ["rol"],
+                      as: "rol",
+                    },
+                ]
             });
 
             if (result.length == 0) {
@@ -31,7 +38,7 @@ class UsuarioController {
             const { idUsuario } = req.params;
 
             const result = await Usuario.findOne({
-                attributes: ["idUsuario", "nombre", "apellido", "email", "contraseña"],
+                attributes: ["idUsuario", "nombre", "apellido", "email", "contraseña", "rolId"],
                 where: {
                     idUsuario
                 },
@@ -57,7 +64,7 @@ class UsuarioController {
     crearUsuario = async (req, res, next) => {
         try {
 
-            const { nombre, apellido, email, contraseña } = req.body
+            const { nombre, apellido, email, contraseña, rolId } = req.body
 
             
             if (contraseña.length < 4) {
@@ -66,7 +73,7 @@ class UsuarioController {
                 throw error;
             }
 
-            const result = await Usuario.create({ nombre, apellido, email, contraseña })
+            const result = await Usuario.create({ nombre, apellido, email, contraseña, rolId })
 
             if (!result) {
                 const error = new Error("Error al crear el Usuario")
