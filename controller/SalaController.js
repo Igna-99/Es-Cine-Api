@@ -46,8 +46,8 @@ class SalaController {
 
       });
 
-      if (result.length == 0) {
-        const error = new Error("no hay salas cargadas");
+      if (!result) {
+        const error = new Error(`la sala '${sala}' no esta cargada`);
         error.status = 400
         throw error
       }
@@ -68,7 +68,7 @@ class SalaController {
 
 
       //if (capacidad.length >= 3 || capacidad.length < 1) { ?????
-      if ( capacidad < 1 || capacidad >= 3 )  {
+      if (capacidad < 1 || capacidad >= 30) {
         console.log("dasds")
         const error = new Error("La capacidad tiene que ser menor a 30 y mayor a 0")
         error.status = 400;
@@ -85,7 +85,13 @@ class SalaController {
 
       res
         .status(200)
-        .send({ success: true, message: "Sala Creada Exitosamente", result })
+        .send({ success: true, message: "Sala Creada Exitosamente", result });
+
+
+
+      // estaria bueno crear automaticamente los asintos para las Salas, BulkCreate maybe
+
+
     } catch (error) {
 
       next(error);
