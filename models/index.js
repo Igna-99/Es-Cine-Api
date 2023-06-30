@@ -4,6 +4,7 @@ import Funcion from "./Funcion.js";
 import Sala from "./Sala.js";
 import Pelicula from "./Pelicula.js";
 import Asiento from "./Asiento.js";
+import AsientosDeFuncion from "./AsientosDeFuncion.js";
 import Rol from "./Rol.js"
 
 
@@ -44,18 +45,6 @@ Reserva.belongsTo(Funcion, {
     // onDelete: "RESTRICT",
 });
 
-// Relacion Asiento(1) y Reservas(M)
-
-Asiento.hasMany(Reserva, {
-    foreignKey: 'idAsiento',
-    // onUpdate: "RESTRICT",
-    // onDelete: "RESTRICT",
-});
-Reserva.belongsTo(Asiento, {
-    foreignKey: 'idAsiento',
-    // onUpdate: "RESTRICT",
-    // onDelete: "RESTRICT",
-});
 
 // Relacion Pelicula(1) y Funcion(M)
 
@@ -96,6 +85,28 @@ Asiento.belongsTo(Sala, {
     // onDelete: "RESTRICT",
 });
 
+// Relacion Funcion(M) y Asiento(M) con  AsientosDeFuncion
+
+Funcion.belongsToMany(Asiento, {
+    through: 'AsientosDeFuncion',
+    foreignKey: 'idFuncion',
+});
+Asiento.belongsToMany(Funcion, {
+    through: 'AsientosDeFuncion',
+    foreignKey: 'idAsiento',
+});
+
+// Relacion Reserva(1) y AsientosDeFuncion(M)
+
+Reserva.hasMany(AsientosDeFuncion, {
+    foreignKey: 'idReserva',
+});
+AsientosDeFuncion.belongsTo(Reserva, {
+    foreignKey: 'idReserva',
+});
 
 
-export { Usuario, Reserva, Funcion, Sala, Pelicula, Asiento, Rol }
+
+
+
+export { Usuario, Reserva, Funcion, Sala, Pelicula, Asiento, Rol, AsientosDeFuncion }
