@@ -7,15 +7,15 @@ const seedSala = async () => {
         await Sala.bulkCreate([
             {
                 sala: 'A',
-                capacidad: 3,
+                capacidad: 5,
             },
             {
                 sala: 'B',
-                capacidad: 3,
+                capacidad: 5,
             },
             {
                 sala: 'C',
-                capacidad: 3,
+                capacidad: 5,
             },
         ]);
 

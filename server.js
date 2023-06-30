@@ -6,7 +6,6 @@ import { serverPort } from './config/config.js'
 import seedFuncion from './seed/seedFuncion.js'
 import seedSala from './seed/seedSala.js'
 import seedPelicula from './seed/seedPelicula.js'
-import seedAsiento from './seed/seedAsiento.js'
 import seedRol from './seed/seedRol.js'
 
 import cors from 'cors'
@@ -42,7 +41,6 @@ connection.sync({ force: true })
         })
     })
     .then(seedSala)
-    .then(seedAsiento)
     .then(seedPelicula)
     .then(seedFuncion)
     .then(seedRol);

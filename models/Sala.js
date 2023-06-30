@@ -1,6 +1,8 @@
 import { DataTypes as DT } from "sequelize";
 import connection from "../connection/connection.js";
 
+import { Asiento } from "../models/index.js";
+
 const Sala = connection.define("Sala", {
 
     sala: {
@@ -26,5 +28,48 @@ const Sala = connection.define("Sala", {
 }, {
     timestamps: false
 })
+
+
+
+Sala.afterCreate(async (sala) => {
+
+    let CantidadAsietnos = sala.capacidad;
+
+    for (let numeroAsiento = 1; numeroAsiento <= CantidadAsietnos; numeroAsiento++) {
+        let resultado = await Asiento.create({
+            sala: sala.sala,
+            numeroAsiento,
+        });
+    }
+
+});
+
+Sala.afterBulkCreate(async (salas) => {
+
+    for (let index = 0; index < salas.length; index++) {
+
+        const sala = salas[index];
+
+        const CantidadAsietnos = sala.capacidad;
+
+        for (let numeroAsiento = 1; numeroAsiento <= CantidadAsietnos; numeroAsiento++) {
+            await Asiento.create({
+                sala: sala.sala,
+                numeroAsiento,
+            });
+
+        }
+
+
+        
+    }
+
+
+
+
+
+});
+
+
 
 export default Sala

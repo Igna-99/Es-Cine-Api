@@ -1,4 +1,4 @@
-import { Reserva, Asiento, Funcion } from "../models/index.js";
+import { Reserva, Asiento, Funcion, AsientosDeFuncion } from "../models/index.js";
 
 class ReservaController {
 
@@ -44,44 +44,34 @@ class ReservaController {
 
     crearReserva = async (req, res, next) => {
         try {
+
             const { idUsuario } = req.params;
+
             const { IdFuncion, idAsiento } = req.body
 
-            
-            // no se si esto esta bien, preguntar
+            // compruba que el asiento este disponible
 
-            const auxAsiento = await Asiento.findOne({
-                where:{
+            const asientoDeFuncion = await Asiento.findOne({
+                where: {
+                    IdFuncion,
                     idAsiento
                 }
             })
-            const auxFuncion = await Funcion.findOne({
-                where:{
-                    IdFuncion
-                }
-            })
 
-            if( auxAsiento.sala != auxFuncion.sala ) {
-                const error = new Error("Error, El asiento Seleccionado no es de la misma sala que la funcion")
+            if (!asientoDeFuncion) {
+                const error = new Error("Error, El Asiento de Funcion inexistente")
+                error.status = 401;
+                throw error;
+            }
+            if (asientoDeFuncion.idReserva != null) {
+                const error = new Error("Error, El asiento Seleccionado ya esta Reservado")
                 error.status = 401;
                 throw error;
             }
 
+            
 
-            //
 
-
-            const result = await Reserva.create({
-                idFuncion: parseInt(IdFuncion),
-                idAsiento: parseInt(idAsiento),
-                idUsuario: parseInt(idUsuario),
-            })
-
-            if (!result) {
-                const error = new Error("Error al crear Reserva")
-                error.status = 400;
-                throw error;
-            }
 
             res
                 .status(200)

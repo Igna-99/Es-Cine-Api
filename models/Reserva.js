@@ -24,13 +24,6 @@ const Reserva = connection.define("Reserva", {
         foreignKey: true,
     },
 
-    idAsiento: {
-        type: DT.INTEGER,
-        allowNull: false,
-        foreignKey: true,
-    },
-
-
 }, {
     timestamps: false
 })
