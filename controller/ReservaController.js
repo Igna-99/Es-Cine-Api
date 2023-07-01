@@ -45,37 +45,15 @@ class ReservaController {
     crearReserva = async (req, res, next) => {
         try {
 
-            const { idUsuario } = req.params;
+            //Work In Progress
 
-            const { IdFuncion, idAsiento } = req.body
+            // const { idUsuario } = req.params;
+            // const { IdFuncion, numeroAsiento } = req.body
 
-            // compruba que el asiento este disponible
+            // res
+            //     .status(200)
+            //     .send({ success: true, message: "Reserva Creada Exitosamente", result, hotel: 'trivago' })
 
-            const asientoDeFuncion = await Asiento.findOne({
-                where: {
-                    IdFuncion,
-                    idAsiento
-                }
-            })
-
-            if (!asientoDeFuncion) {
-                const error = new Error("Error, El Asiento de Funcion inexistente")
-                error.status = 401;
-                throw error;
-            }
-            if (asientoDeFuncion.idReserva != null) {
-                const error = new Error("Error, El asiento Seleccionado ya esta Reservado")
-                error.status = 401;
-                throw error;
-            }
-
-            
-
-
-
-            res
-                .status(200)
-                .send({ success: true, message: "Reserva Creada Exitosamente", result })
 
         } catch (error) {
 

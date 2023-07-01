@@ -27,7 +27,7 @@ const seedFuncion = async () => {
             },
             {
                 idPelicula: 569094,
-                sala: 'A',
+                sala: 'B',
                 horario: '23:30'
             },
             {

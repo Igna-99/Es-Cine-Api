@@ -30,19 +30,22 @@ const Sala = connection.define("Sala", {
 })
 
 
+// Este 'Trigger?' genera todas los Asientos de una Sala, a partir de la capacidad letra de sala de la misma,
+// haciendo que no sea necesario cargar manualmente las salas 
 
 Sala.afterCreate(async (sala) => {
-
     let CantidadAsietnos = sala.capacidad;
 
     for (let numeroAsiento = 1; numeroAsiento <= CantidadAsietnos; numeroAsiento++) {
-        let resultado = await Asiento.create({
+        await Asiento.create({
             sala: sala.sala,
             numeroAsiento,
         });
-    }
+    };
 
 });
+
+// Lo mismo de anterio, pero para BulKCreate
 
 Sala.afterBulkCreate(async (salas) => {
 
@@ -59,17 +62,9 @@ Sala.afterBulkCreate(async (salas) => {
             });
 
         }
-
-
-        
-    }
-
-
-
-
+    };
 
 });
-
 
 
 export default Sala
