@@ -5,15 +5,21 @@ import connection from "../connection/connection.js";
 const AsientosDeFuncion = connection.define("AsientosDeFuncion", {
 
 
+    idFuncion: {
+        type: DT.INTEGER,
+        primaryKey: true,
+    },
+
     idAsiento: {
         type: DT.INTEGER,
         primaryKey: true,
     },
 
-    idFuncion: {
+    numeroAsiento: {
         type: DT.INTEGER,
-        primaryKey: true,
+        allowNull: false,
     },
+
 
     idReserva: {
         type: DT.INTEGER,

@@ -60,6 +60,7 @@ Funcion.afterCreate(async (funcion) => {
         await AsientosDeFuncion.create({
             idFuncion: funcion.idFuncion,
             idAsiento: asiento.idAsiento,
+            numeroAsiento: asiento.numeroAsiento,
         })
     }
 
@@ -85,6 +86,7 @@ Funcion.afterBulkCreate(async (funciones) => {
             await AsientosDeFuncion.create({
                 idFuncion: funcion.idFuncion,
                 idAsiento: asiento.idAsiento,
+                numeroAsiento: asiento.numeroAsiento,
             })
 
         }
