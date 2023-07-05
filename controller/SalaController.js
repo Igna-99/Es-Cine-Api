@@ -66,8 +66,6 @@ class SalaController {
 
       const { sala, capacidad } = req.body;
 
-
-      //if (capacidad.length >= 3 || capacidad.length < 1) { ?????
       if (capacidad < 1 || capacidad >= 30) {
         console.log("dasds")
         const error = new Error("La capacidad tiene que ser menor a 30 y mayor a 0")
@@ -86,10 +84,6 @@ class SalaController {
       res
         .status(200)
         .send({ success: true, message: "Sala Creada Exitosamente", result });
-
-
-
-      // estaria bueno crear automaticamente los asintos para las Salas, BulkCreate maybe
 
 
     } catch (error) {

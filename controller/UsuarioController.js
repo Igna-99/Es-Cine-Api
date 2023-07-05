@@ -69,9 +69,6 @@ class UsuarioController {
 
     crearUsuario = async (req, res, next) => {
         try {
-
-            
-
             const { nombre, apellido, email, contraseña } = req.body
 
 

@@ -91,6 +91,21 @@ Usuario.beforeCreate(async (user) => {
 
 });
 
+Usuario.beforeBulkCreate(async (users) => {
+
+  for (let index = 0; index < users.length; index++) {
+    const user = users[index];
+
+    const salt = await bcrypt.genSalt();
+    user.salt = salt;
+  
+    const contraseñaHash = await bcrypt.hash(user.contraseña, salt);
+    user.contraseña = contraseñaHash;
+    
+  };
+
+});
+
 
 
 export default Usuario

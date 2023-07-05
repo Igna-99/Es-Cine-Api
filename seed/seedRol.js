@@ -1,6 +1,6 @@
 import { Rol } from "../models/index.js";
 
-const rolSeed = async () => {
+const seedRol = async () => {
   try {
     await Rol.bulkCreate([
       {
@@ -15,4 +15,4 @@ const rolSeed = async () => {
   }
 };
 
-export default rolSeed;
+export default seedRol;

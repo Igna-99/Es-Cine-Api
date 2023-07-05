@@ -11,6 +11,7 @@ import seedFuncion from './seed/seedFuncion.js'
 import seedSala from './seed/seedSala.js'
 import seedPelicula from './seed/seedPelicula.js'
 import seedRol from './seed/seedRol.js'
+import seedUsuario from './seed/seedUsuario.js'
 
 
 
@@ -57,7 +58,7 @@ app.use((error, req, res, next) => {
 
 
 
-let forza = false
+let forza = true
 
 
 connection.sync({ force: forza })
@@ -73,6 +74,7 @@ connection.sync({ force: forza })
       await seedPelicula()
       await seedFuncion()
       await seedRol()
+      await seedUsuario()
     }
   });
 

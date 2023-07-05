@@ -108,6 +108,20 @@ class FuncionController {
 
             const { sala, horario, idPelicula } = req.body;
 
+
+            const yaHayFuncionProgramada = await Funcion.findOne({
+                where:{
+                    sala,
+                    horario,
+                }
+            });
+
+            if (yaHayFuncionProgramada != null) {
+                const error = new Error(`La Sala ${sala} ya cuenta con una Funcion en el horario ${horario}`);
+                error.status = 400;
+                throw error;
+            }
+
             const result = await Funcion.create({
                 sala,
                 horario,
@@ -123,6 +137,32 @@ class FuncionController {
             res
                 .status(200)
                 .send({ success: true, message: "Funcion Creada Exitosamente", result });
+
+        } catch (error) {
+            next(error);
+        }
+    };
+
+    borrarFuncion = async (req, res, next) => {
+        try {
+            const { sala, horario } = req.body;
+
+            const result = await Funcion.destroy({
+                where: {
+                    sala,
+                    horario,
+                }
+            });
+
+            if (!result) {
+                const error = new Error("Error al borrar la Funcion");
+                error.status = 400;
+                throw error;
+            }
+
+            res
+                .status(200)
+                .send({ success: true, message: "Funcion Borrada Exitosamente", result });
 
         } catch (error) {
             next(error);
