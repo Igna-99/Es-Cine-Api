@@ -2,11 +2,54 @@ import { Reserva, Asiento, Funcion, AsientosDeFuncion } from "../models/index.js
 
 class ReservaController {
 
-    constructor() { }
+     constructor() { }
 
     trearReservaDeUsuario = async (req, res, next) => {
         try {
-            const { idUsuario } = req.params;
+
+            const { idUsuario } = req.user
+
+            const { idReserva } = req.params
+
+            const result = await Reserva.findOne({
+                attributes: ["idReserva", "idUsuario"],
+                include: [
+                    {
+                        model: Funcion,
+                        attributes: ['Horario', 'sala', 'idPelicula'],
+                    },
+                    {
+                        model: AsientosDeFuncion,
+                        attributes: ['numeroAsiento',],
+                    },
+                ],
+                where: {
+                    idReserva,
+                    idUsuario,
+
+                },
+            });
+
+            if (!result) {
+                const error = new Error(`La Reserva ${idReserva} no pertenece al Usuario ${idUsuario}`);
+                error.status = 400
+                throw error
+            }
+
+            res
+                .status(200)
+                .send({ success: true, message: `Reserva del Usuario ${idUsuario}:`, result })
+
+        } catch (error) {
+
+            next(error);
+        }
+
+    };
+
+    trearTodasLasReservasDeUsuario = async (req, res, next) => {
+        try {
+            const { idUsuario } = req.user
 
             const result = await Reserva.findAll({
                 attributes: ["idReserva", "idUsuario"],
@@ -21,11 +64,9 @@ class ReservaController {
                     },
                 ],
                 where: {
-                    idUsuario
+                    idUsuario,
                 },
             });
-
-
 
             if (result.length == 0) {
                 const error = new Error(`El Usuario ${idUsuario} no tiene Reservas`);
@@ -46,9 +87,8 @@ class ReservaController {
 
     crearReserva = async (req, res, next) => {
         try {
+            const { idUsuario } = req.user
 
-
-            const { idUsuario } = req.params;
             const { IdFuncion, numeroAsiento } = req.body
 
             // buscamos la Funcion seleccionada y lanzamos un error si la misma no existe
@@ -113,7 +153,7 @@ class ReservaController {
 
             res
                 .status(200)
-                .send({ success: true, message: "Reserva Creada Exitosamente", asientoDeFuncionSeleccionado })
+                .send({ success: true, message: "Reserva Creada Exitosamente",result, asientoDeFuncionSeleccionado })
 
 
         } catch (error) {

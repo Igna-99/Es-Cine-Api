@@ -1,34 +1,46 @@
 import { Router } from "express";
 
 import UsuarioController from "../controller/UsuarioController.js";
-import ReservaController from "../controller/ReservaController.js";
+
+import validateAccess from "../middleware/validateAccess.js";
+import isAdmin from "../middleware/isAdmin.js"
+
 
 const usuarioController = new UsuarioController()
-const reservaController = new ReservaController()
 
 
 const usuarioRoutes = Router();
 
 
-//
+//sin necesidad de logueo
 
-usuarioRoutes.get("/:idUsuario", usuarioController.traerUsuarioPorId)
 
-usuarioRoutes.get("/", usuarioController.traerTodosLosUsuarios)
+usuarioRoutes.post("/create", usuarioController.crearUsuario)
 
 usuarioRoutes.post("/login", usuarioController.login)
 
-usuarioRoutes.post("/", usuarioController.crearUsuario)
 
-usuarioRoutes.put("/:idUsuario", usuarioController.modificarUsuario)
+//con necesidad de logueo
+usuarioRoutes.use(validateAccess);
+
+
+usuarioRoutes.get("/me", usuarioController.me)
+
+usuarioRoutes.post("/logout", usuarioController.logout)
+
+usuarioRoutes.put("/", usuarioController.modificarUsuario)
 
 usuarioRoutes.delete("/", usuarioController.delete)
 
-//
 
-usuarioRoutes.get("/:idUsuario/reserva",reservaController.trearReservaDeUsuario)
+//con necesidad de ser admin
+usuarioRoutes.use(isAdmin);
 
-usuarioRoutes.post("/:idUsuario/reserva", reservaController.crearReserva)
+
+usuarioRoutes.get("/all", usuarioController.traerTodosLosUsuarios)
+
+usuarioRoutes.get("/:idUsuario", usuarioController.traerUsuarioPorId)
+
 
 
 export default usuarioRoutes
