@@ -1,31 +1,44 @@
 import { Router } from "express";
-
 import UsuarioController from "../controller/UsuarioController.js";
-import ReservaController from "../controller/ReservaController.js";
 
-const usuarioController = new UsuarioController()
-const reservaController = new ReservaController()
+import validateAccess from "../middleware/validateAccess.js";
+import isAdmin from "../middleware/isAdmin.js";
+
+
+const usuarioController = new UsuarioController();
+
 
 const usuarioRoutes = Router();
 
 
-usuarioRoutes.get("/", usuarioController.traerTodosLosUsuarios)
-
-usuarioRoutes.get("/:id", usuarioController.traerUsuarioPorId)
-
-usuarioRoutes.post("/login", usuarioController.login)
-
-usuarioRoutes.post("/", usuarioController.crearUsuario)
-
-usuarioRoutes.delete("/", usuarioController.delete)
+//sin necesidad de logueo
 
 
+usuarioRoutes.post("/create", usuarioController.crearUsuario);
 
-usuarioRoutes.get("/:idUusario/reserva",reservaController.trearReservaDeUsuario)
+usuarioRoutes.post("/login", usuarioController.login);
 
-usuarioRoutes.post("/:idUusario/reserva", reservaController.crearReserva)
 
-usuarioRoutes.delete("/:idUusario/reserva", reservaController.eliminarReserva)
+//con necesidad de logueo
+usuarioRoutes.use(validateAccess);
+
+
+usuarioRoutes.get("/me", usuarioController.me);
+
+usuarioRoutes.post("/logout", usuarioController.logout);
+
+usuarioRoutes.put("/", usuarioController.modificarUsuario);
+
+usuarioRoutes.delete("/", usuarioController.delete);
+
+
+//con necesidad de ser admin
+usuarioRoutes.use(isAdmin);
+
+
+usuarioRoutes.get("/all", usuarioController.traerTodosLosUsuarios);
+
+usuarioRoutes.get("/:idUsuario", usuarioController.traerUsuarioPorId);
 
 
 

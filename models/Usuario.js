@@ -1,61 +1,89 @@
-import { DataTypes, Model } from "sequelize";
+import { DataTypes as DT, Model } from "sequelize";
 import connection from "../connection/connection.js";
 import bcrypt from "bcrypt";
 
 class Usuario extends Model {
 
-  async validarContraseña(contraseña){
+  async validarContraseña(contraseña) {
     return await bcrypt.compare(contraseña, this.contraseña);
   }
-
 
 }
 
 Usuario.init({
+
+  idUsuario: {
+    type: DT.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+
   nombre: {
-    type: DataTypes.STRING(20),
+    type: DT.STRING(20),
     allowNull: false,
 
     validate: {
-      isAlpha: true
+      isAlpha: {
+        msg: "El Nombre debe ser AlphaNumerico"
+      }
     },
   },
+
   apellido: {
-    type: DataTypes.STRING(20),
+    type: DT.STRING(20),
     allowNull: false,
 
     validate: {
-      isAlpha: true
+      isAlpha: {
+        msg: "El Apellido debe ser AlphaNumerico"
+      }
     },
 
   },
+
   email: {
-    type: DataTypes.STRING(20),
+    type: DT.STRING(40),
     allowNull: false,
-    unique: true,
+    unique: {
+      msg: "El Email ingresado ya esta Registrado"
+    },
 
     validate: {
-      isEmail: true,
+      isEmail: {
+        msg: "El Email ingresado no tiene un formato correcto"
+      },
     },
   },
+
   contraseña: {
-    type: DataTypes.STRING(),
+    type: DT.STRING(),
     allowNull: false
   },
 
+  idRol: {
+    type: DT.INTEGER(),
+    defaultValue: 2,
+  },
+
   salt: {
-    type: DataTypes.STRING(),
+    type: DT.STRING(),
   },
 
 }, {
 
   sequelize: connection,
+  timestamps: false,
   modelName: "Usuario"
 
-})
+});
+
+Usuario.beforeUpdate(async (user) => {
+
+  const nuevaContraseñaHash = await bcrypt.hash(user.contraseña, user.salt);
+  user.contraseña = nuevaContraseñaHash;
+});
 
 Usuario.beforeCreate(async (user) => {
-
   const salt = await bcrypt.genSalt();
   user.salt = salt;
 
@@ -63,5 +91,22 @@ Usuario.beforeCreate(async (user) => {
   user.contraseña = contraseñaHash;
 
 });
+
+Usuario.beforeBulkCreate(async (users) => {
+
+  for (let index = 0; index < users.length; index++) {
+    const user = users[index];
+
+    const salt = await bcrypt.genSalt();
+    user.salt = salt;
+  
+    const contraseñaHash = await bcrypt.hash(user.contraseña, salt);
+    user.contraseña = contraseñaHash;
+    
+  };
+
+});
+
+
 
 export default Usuario

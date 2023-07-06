@@ -6,13 +6,20 @@ const seedPelicula = async () => {
 
         await Pelicula.bulkCreate([
             {
-                idPelicula: 6585
+                idPelicula: 569094
+                //spider-man
             },
             {
-                idPelicula: 6964
+                idPelicula: 713704
+                //evil dead rise
             },
             {
-                idPelicula: 4200
+                idPelicula: 315162
+                //el gato con botas 2
+            },
+            {
+                idPelicula: 447277
+                //la sirenita 2023
             },
         ]);
 
