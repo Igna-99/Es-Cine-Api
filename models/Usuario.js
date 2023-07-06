@@ -72,9 +72,10 @@ Usuario.init({
 }, {
 
   sequelize: connection,
+  timestamps: false,
   modelName: "Usuario"
 
-})
+});
 
 Usuario.beforeUpdate(async (user) => {
 

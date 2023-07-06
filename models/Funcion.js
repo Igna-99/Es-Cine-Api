@@ -33,6 +33,11 @@ Funcion.init({
         allowNull: false,
     },
 
+    fecha: {
+        type: DT.DATEONLY,
+        allowNull: false,
+    },
+
 }, {
 
     sequelize: connection,

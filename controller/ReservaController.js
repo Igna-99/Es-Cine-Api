@@ -2,7 +2,7 @@ import { Reserva, Asiento, Funcion, AsientosDeFuncion } from "../models/index.js
 
 class ReservaController {
 
-     constructor() { }
+    constructor() { }
 
     trearReservaDeUsuario = async (req, res, next) => {
         try {
@@ -16,7 +16,7 @@ class ReservaController {
                 include: [
                     {
                         model: Funcion,
-                        attributes: ['Horario', 'sala', 'idPelicula'],
+                        attributes: ['sala', 'fecha', 'Horario', 'idPelicula'],
                     },
                     {
                         model: AsientosDeFuncion,
@@ -56,7 +56,7 @@ class ReservaController {
                 include: [
                     {
                         model: Funcion,
-                        attributes: ['Horario', 'sala', 'idPelicula'],
+                        attributes: ['sala', 'fecha', 'Horario', 'idPelicula'],
                     },
                     {
                         model: AsientosDeFuncion,
@@ -153,7 +153,7 @@ class ReservaController {
 
             res
                 .status(200)
-                .send({ success: true, message: "Reserva Creada Exitosamente",result, asientoDeFuncionSeleccionado })
+                .send({ success: true, message: "Reserva Creada Exitosamente", result, asientoDeFuncionSeleccionado })
 
 
         } catch (error) {
