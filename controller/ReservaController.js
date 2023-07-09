@@ -16,7 +16,7 @@ class ReservaController {
                 include: [
                     {
                         model: Funcion,
-                        attributes: ['sala', 'fecha', 'Horario', 'idPelicula'],
+                        attributes: ['sala', 'fecha', 'horario', 'idPelicula'],
                     },
                     {
                         model: AsientosDeFuncion,
@@ -56,7 +56,7 @@ class ReservaController {
                 include: [
                     {
                         model: Funcion,
-                        attributes: ['sala', 'fecha', 'Horario', 'idPelicula'],
+                        attributes: ['sala', 'fecha', 'horario', 'idPelicula'],
                     },
                     {
                         model: AsientosDeFuncion,

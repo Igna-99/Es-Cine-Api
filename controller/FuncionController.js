@@ -1,4 +1,5 @@
 import { Funcion } from "../models/index.js";
+import { separateByDate } from "../utils/separateByDate.js";
 import { validDate, validTime } from "../utils/validateDateAndTime.js";
 
 class FuncionController {
@@ -17,9 +18,38 @@ class FuncionController {
                 throw error
             }
 
+            let funcionesPorFecha = separateByDate(result)
+
             res
                 .status(200)
-                .send({ success: true, message: "Funciones:", result })
+                .send({ success: true, message: "Funciones:", funcionesPorFecha })
+
+        } catch (error) {
+            next(error)
+        }
+    };
+
+    traerFuncionPorId = async (req, res, next) => {
+        try {
+
+            const { idFuncion } = req.params;
+
+            const result = await Funcion.findOne({
+                attributes: ['idFuncion', 'sala', 'horario', 'fecha', 'idPelicula'],
+                where:{
+                    idFuncion
+                }
+            });
+
+            if (!result) {
+                const error = new Error("no hay Funciones cargadas");
+                error.status = 400
+                throw error
+            }
+
+            res
+                .status(200)
+                .send({ success: true, message: `Funcion ${idFuncion}`, result })
 
         } catch (error) {
             next(error)
@@ -43,9 +73,11 @@ class FuncionController {
                 throw error
             }
 
+            let funcionesPorFecha = separateByDate(result)
+
             res
                 .status(200)
-                .send({ success: true, message: `Funciones de la Sala ${sala}:`, result })
+                .send({ success: true, message: `Funciones de la Sala ${sala}:`, funcionesPorFecha })
 
         } catch (error) {
             next(error)
@@ -55,6 +87,13 @@ class FuncionController {
     traerFuncionesDeUnaFecha = async (req, res, next) => {
         try {
             const { fecha } = req.params;
+
+            if (!validDate(fecha)) {
+                const error = new Error(`el Formato de la Fecha es incorrecto ${fecha}`);
+                error.status = 400;
+                throw error;
+
+            }
 
             const result = await Funcion.findAll({
                 attributes: ['idFuncion', 'sala', 'horario', 'fecha', 'idPelicula'],
@@ -80,12 +119,11 @@ class FuncionController {
 
     traerFuncionesDeUnHorario = async (req, res, next) => {
         try {
-            const { fecha, horario } = req.params;
+            const { fecha } = req.params;
 
             const result = await Funcion.findAll({
                 attributes: ['idFuncion', 'sala', 'horario', 'fecha', 'idPelicula'],
                 where: {
-                    fecha,
                     horario,
                 },
             });
@@ -96,9 +134,12 @@ class FuncionController {
                 throw error
             }
 
+            let funcionesPorFecha = separateByDate(result)
+
+
             res
                 .status(200)
-                .send({ success: true, message: ` Funciones a las ${horario} del ${fecha}`, result })
+                .send({ success: true, message: ` Funciones a las ${horario} del ${fecha}`, funcionesPorFecha })
 
         } catch (error) {
             next(error)
@@ -122,9 +163,12 @@ class FuncionController {
                 throw error
             }
 
+            let funcionesPorFecha = separateByDate(result)
+
+
             res
                 .status(200)
-                .send({ success: true, message: "Funciones para la pelicula con ID " + idPelicula + ":", result })
+                .send({ success: true, message: "Funciones para la pelicula con ID " + idPelicula + ":", funcionesPorFecha })
 
         } catch (error) {
             next(error)
@@ -149,7 +193,6 @@ class FuncionController {
                 throw error;
 
             }
-
 
             const yaHayFuncionProgramada = await Funcion.findOne({
                 where: {

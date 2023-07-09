@@ -130,6 +130,8 @@ class UsuarioController {
             //tomamos los datos del usuario que necesitamos para generar el token
             const payload = {
                 idUsuario: result.idUsuario,
+                nombre: result.nombre,
+                apellido: result.apellido,
                 email: result.email,
                 idRol: result.idRol
             };
@@ -137,12 +139,12 @@ class UsuarioController {
             //generamos el token 
             const token = generateToken(payload);
 
-            res.cookie('tokenCine',token)
+            res.cookie('tokenCine', token)
 
 
             res
                 .status(200)
-                .send({ success: true, message: "Usuario Logeado Exitosamente", result });
+                .send({ success: true, message: "Usuario Logeado Exitosamente", payload });
         } catch (error) {
 
             next(error);
@@ -151,7 +153,7 @@ class UsuarioController {
 
     logout = async (req, res, next) => {
         try {
-            res.cookie('tokenCine','')
+            res.cookie('tokenCine', '')
 
             res
                 .status(200)
@@ -172,7 +174,7 @@ class UsuarioController {
             const result = await Usuario.findOne({
                 where: {
                     idUsuario,
-                    email,   
+                    email,
                 }
             });
 
@@ -203,7 +205,7 @@ class UsuarioController {
                 throw error;
             }
 
-            res.cookie('tokenCine','')
+            res.cookie('tokenCine', '')
 
             res
                 .status(200)
@@ -256,16 +258,16 @@ class UsuarioController {
             const { user } = req
 
             res
-            .status(200)
-            .send({ success: true, message: "Usuario", user });
-            
+                .status(200)
+                .send({ success: true, message: "Usuario", user });
+
         } catch (error) {
 
             next(error);
-            
+
         }
     }
 
-} 
+}
 
 export default UsuarioController

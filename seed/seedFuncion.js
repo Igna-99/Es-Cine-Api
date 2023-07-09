@@ -41,6 +41,30 @@ const seedFuncion = async () => {
                 horario: '18:30',
                 fecha: '2023-10-24'
             },
+            {
+                idPelicula: 315162,
+                sala: 'A',
+                horario: '21:30',
+                fecha: '2023-11-24'
+            },
+            {
+                idPelicula: 315162,
+                sala: 'A',
+                horario: '21:30',
+                fecha: '2023-12-24'
+            },
+            {
+                idPelicula: 315162,
+                sala: 'A',
+                horario: '21:30',
+                fecha: '2023-12-25'
+            },
+            {
+                idPelicula: 315162,
+                sala: 'A',
+                horario: '21:30',
+                fecha: '2023-2-27'
+            },
 
         ]);
 

@@ -9,11 +9,15 @@ const funcionController = new FuncionController();
 const funcionRoutes = Router();
 
 
-funcionRoutes.get("/",funcionController.traerTodasLasFunciones);
+funcionRoutes.get("/all",funcionController.traerTodasLasFunciones);
+
+funcionRoutes.get("/:idFuncion",funcionController.traerFuncionPorId);
 
 funcionRoutes.get("/sala/:sala",funcionController.traerFuncionesDeUnaSala);
 
 funcionRoutes.get("/horario/:horario",funcionController.traerFuncionesDeUnHorario);
+
+funcionRoutes.get("/fecha/:fecha",funcionController.traerFuncionesDeUnaFecha);
 
 funcionRoutes.get("/pelicula/:idPelicula",funcionController.traerFuncionesDeUnaPelicula);
 
