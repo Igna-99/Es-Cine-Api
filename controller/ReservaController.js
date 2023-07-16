@@ -8,7 +8,6 @@ class ReservaController {
         try {
 
             const { idUsuario } = req.user
-
             const { idReserva } = req.params
 
             const result = await Reserva.findOne({
@@ -68,16 +67,25 @@ class ReservaController {
                 },
             });
 
-            if (result.length == 0) {
-                const error = new Error(`El Usuario ${idUsuario} no tiene Reservas`);
+            if (!result) {
+                const error = new Error(`Error al buscar las reservas`);
                 error.status = 400
                 throw error
             }
 
-            res
-                .status(200)
-                .send({ success: true, message: `Reservas del Usuario ${idUsuario}:`, result })
+            if (result.length == 0) {
 
+                res
+                    .status(200)
+                    .send({ success: true, message: `El Usuario ${idUsuario} no tiene reservas:`, result })
+
+            } else {
+
+                res
+                    .status(200)
+                    .send({ success: true, message: `Reservas del Usuario ${idUsuario}:`, result })
+
+            }
         } catch (error) {
 
             next(error);

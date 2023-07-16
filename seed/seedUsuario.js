@@ -4,15 +4,15 @@ const seedUsuario = async () => {
   try {
     await Usuario.bulkCreate([
       {
-        nombre:`bruce`,
-        apellido:`wayne`,
+        nombre:`Bruce`,
+        apellido:`Wayne`,
         email:`ImBatman@gmail.com`,
         contraseña:`soyadmin`,
         idRol:1
       },
       {
-        nombre:`ignacio`,
-        apellido:`varela`,
+        nombre:`Ignacio`,
+        apellido:`Varela`,
         email:`ignaciovarela7765@gmail.com`,
         contraseña:`1234`,
       },

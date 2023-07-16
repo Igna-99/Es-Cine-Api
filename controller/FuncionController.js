@@ -1,4 +1,4 @@
-import { Funcion } from "../models/index.js";
+import { Funcion, Asiento } from "../models/index.js";
 import { separateByDate } from "../utils/separateByDate.js";
 import { validDate, validTime } from "../utils/validateDateAndTime.js";
 
@@ -36,13 +36,19 @@ class FuncionController {
 
             const result = await Funcion.findOne({
                 attributes: ['idFuncion', 'sala', 'horario', 'fecha', 'idPelicula'],
+                include: [
+                    {
+                        model: Asiento,
+                        attributes:[ 'idAsiento' ],
+                    },
+                ],
                 where:{
                     idFuncion
                 }
             });
 
             if (!result) {
-                const error = new Error("no hay Funciones cargadas");
+                const error = new Error(`La Funcion ${idFuncion} no existe.`);
                 error.status = 400
                 throw error
             }

@@ -79,8 +79,8 @@ class UsuarioController {
             }
 
             const result = await Usuario.create({
-                nombre,
-                apellido,
+                nombre: nombre.charAt(0).toUpperCase() + nombre.slice(1).toLowerCase(),
+                apellido: apellido.charAt(0).toUpperCase() + apellido.slice(1).toLowerCase() ,
                 email,
                 contraseña,
             })
