@@ -40,6 +40,10 @@ usuarioRoutes.get("/all", usuarioController.traerTodosLosUsuarios);
 
 usuarioRoutes.get("/:idUsuario", usuarioController.traerUsuarioPorId);
 
+usuarioRoutes.post("/grantAdmin", usuarioController.grantAdminRole);
+
+usuarioRoutes.post("/removeAdmin", usuarioController.removeAdminRole);
+
 
 
 export default usuarioRoutes

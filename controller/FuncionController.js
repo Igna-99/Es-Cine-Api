@@ -209,7 +209,7 @@ class FuncionController {
             });
 
             if (yaHayFuncionProgramada != null) {
-                const error = new Error(`En el dia ${fecha}, la Sala ${sala} ya cuenta con una Funcion en el horario ${horario}`);
+                const error = new Error(`En el dia ${fecha}, la Sala ${sala} ya cuenta con una Funcion en el horario ${horario} Hs`);
                 error.status = 400;
                 throw error;
             }

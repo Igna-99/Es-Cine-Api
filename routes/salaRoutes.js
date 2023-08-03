@@ -9,7 +9,7 @@ const salaController = new SalaController();
 const salaRoutes = Router();
 
 
-salaRoutes.get("/",salaController.traerTodasLasSalas);
+salaRoutes.get("/all",salaController.traerTodasLasSalas);
 
 salaRoutes.get("/:sala",salaController.traerSala);
 

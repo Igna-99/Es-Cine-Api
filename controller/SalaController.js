@@ -8,10 +8,6 @@ class SalaController {
     try {
       const result = await Sala.findAll({
         attributes: ["sala", "capacidad"],
-        include: {
-          model: Asiento,
-          attributes: ['numeroAsiento', 'idAsiento'],
-        }
 
       });
 

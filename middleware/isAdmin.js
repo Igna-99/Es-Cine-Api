@@ -3,8 +3,6 @@ import { verifyToken } from "../utils/tokens.js";
 const idAdmin = (req, res, next) => {
     try {
 
-        console.log("cosas")
-
         const { tokenCine } = req.cookies;
 
         const { payload } = verifyToken(tokenCine);

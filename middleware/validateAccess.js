@@ -3,12 +3,8 @@ import { verifyToken } from "../utils/tokens.js";
 const validateAccess = (req, res, next) => {
     try {
 
-        
-
-
         const { tokenCine } = req.cookies;
         
-
         if (!tokenCine) {
             const error = new Error("no hay cookie")
             error.status = 400;
@@ -23,11 +19,8 @@ const validateAccess = (req, res, next) => {
             error.status = 400;
             throw error;
         };
-
-        
-
+    
         req.user = payload;
-
 
         next()
 

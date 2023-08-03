@@ -80,7 +80,7 @@ class UsuarioController {
 
             const result = await Usuario.create({
                 nombre: nombre.charAt(0).toUpperCase() + nombre.slice(1).toLowerCase(),
-                apellido: apellido.charAt(0).toUpperCase() + apellido.slice(1).toLowerCase() ,
+                apellido: apellido.charAt(0).toUpperCase() + apellido.slice(1).toLowerCase(),
                 email,
                 contraseña,
             })
@@ -266,7 +266,96 @@ class UsuarioController {
             next(error);
 
         }
-    }
+    };
+
+    grantAdminRole = async (req, res, next) => {
+        try {
+
+            const { idUsuario } = req.body;
+
+            const usuario = await Usuario.findOne({
+                where: {
+                    idUsuario,
+                }
+            });
+
+            if (!usuario) {
+                const error = new Error(`No existe Usuario con el id ${idUsuario}`);
+                error.status = 400;
+                throw error;
+            }
+
+            if (usuario.dataValues.idRol == 1) {
+                const error = new Error(`El Usuario con el id ${idUsuario} ya es Admin`);
+                error.status = 400;
+                throw error;
+            }
+
+            await Usuario.update({ idRol: 1 }, {
+                where: {
+                    idUsuario
+                }
+            });
+
+            res
+                .status(200)
+                .send({ success: true, message: `El Usuario con el id ${idUsuario} ahora es Admin`});
+
+        } catch (error) {
+
+            next(error);
+
+        }
+    };
+
+    removeAdminRole = async (req, res, next) => {
+        try {
+
+            const { idUsuario } = req.body;
+
+            const { user } = req
+
+            if (user.idUsuario == idUsuario) {
+                const error = new Error(`no puedes quitarte el rol de Admin a ti mismo`);
+                error.status = 400;
+                throw error;
+            }
+
+            const usuario = await Usuario.findOne({
+                where: {
+                    idUsuario,
+                }
+            });
+
+            if (!usuario) {
+                const error = new Error(`No existe Usuario con el id ${idUsuario}`);
+                error.status = 400;
+                throw error;
+            }
+
+            if (usuario.dataValues.idRol == 2) {
+                const error = new Error(`El Usuario con el id ${idUsuario} no es Admin`);
+                error.status = 400;
+                throw error;
+            }
+
+            await Usuario.update({ idRol: 2 }, {
+                where: {
+                    idUsuario
+                }
+            });
+
+
+            res
+                .status(200)
+                .send({ success: true, message: `El Usuario con el id ${idUsuario} ya no es Admin`});
+
+        } catch (error) {
+
+            next(error);
+
+        }
+    };
 
 }
 
