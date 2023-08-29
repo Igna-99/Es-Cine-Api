@@ -44,6 +44,10 @@ usuarioRoutes.post("/grantAdmin", usuarioController.grantAdminRole);
 
 usuarioRoutes.post("/removeAdmin", usuarioController.removeAdminRole);
 
+usuarioRoutes.post("/enableUser", usuarioController.enableUser);
+
+usuarioRoutes.post("/disableUser", usuarioController.disableUser);
+
 
 
 export default usuarioRoutes

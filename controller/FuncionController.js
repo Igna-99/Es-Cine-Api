@@ -181,6 +181,25 @@ class FuncionController {
         }
     };
 
+    traerCantidadFuncionesDeUnaPelicula = async (req, res, next) => {
+        try {
+            const { idPelicula } = req.params;
+
+            const result = await Funcion.count({
+                where: {
+                    idPelicula
+                },
+            });
+
+            res
+                .status(200)
+                .send({ success: true, message: `Cantidad de Funciones Programadas para la Pelicula ${idPelicula}:`, result })
+
+        } catch (error) {
+            next(error)
+        }
+    };
+
     crearFuncion = async (req, res, next) => {
         try {
 
@@ -238,12 +257,11 @@ class FuncionController {
 
     borrarFuncion = async (req, res, next) => {
         try {
-            const { sala, horario } = req.body;
+            const { idFuncion } = req.body;
 
             const result = await Funcion.destroy({
                 where: {
-                    sala,
-                    horario,
+                    idFuncion
                 }
             });
 

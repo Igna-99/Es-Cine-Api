@@ -11,7 +11,6 @@ const validateAccess = (req, res, next) => {
             throw error;
         };
 
-
         const { payload } = verifyToken(tokenCine);
 
         if (!tokenCine) {
@@ -31,7 +30,6 @@ const validateAccess = (req, res, next) => {
             error.message = 'JWT expired, Cookie Eliminada'
         }
         
-
         next(error);
     }
 

@@ -26,9 +26,10 @@ funcionRoutes.get("/pelicula/:idPelicula",funcionController.traerFuncionesDeUnaP
 funcionRoutes.use(validateAccess);
 funcionRoutes.use(isAdmin);
 
+funcionRoutes.get("/cantidad/pelicula/:idPelicula",funcionController.traerCantidadFuncionesDeUnaPelicula);
 
 funcionRoutes.post("/", funcionController.crearFuncion);
 
-funcionRoutes.delete("/", funcionController.borrarFuncion);
+funcionRoutes.post("/delete", funcionController.borrarFuncion);
 
 export default funcionRoutes

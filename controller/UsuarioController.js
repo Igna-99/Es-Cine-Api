@@ -8,7 +8,7 @@ class UsuarioController {
     traerTodosLosUsuarios = async (req, res, next) => {
         try {
             const result = await Usuario.findAll({
-                attributes: ["idUsuario", "nombre", "apellido", "email", "contraseña"],
+                attributes: ["idUsuario", "nombre", "apellido", "email", "contraseña","habilitado"],
                 include: [
                     {
                         model: Rol,
@@ -38,7 +38,7 @@ class UsuarioController {
             const { idUsuario } = req.params;
 
             const result = await Usuario.findOne({
-                attributes: ["idUsuario", "nombre", "apellido", "email", "contraseña"],
+                attributes: ["idUsuario", "nombre", "apellido", "email", "contraseña","habilitado"],
                 include: [
                     {
                         model: Rol,
@@ -85,8 +85,6 @@ class UsuarioController {
                 contraseña,
             })
 
-            console.log("executing");
-
             if (!result) {
                 const error = new Error("Error al crear el Usuario")
                 error.status = 400;
@@ -119,6 +117,12 @@ class UsuarioController {
                 throw error;
             }
 
+            if (!result.dataValues.habilitado) {
+                const error = new Error("El Usuario se encuentra inhabilitado");
+                error.status = 400;
+                throw error;
+            }
+
             const contraseñaCorrecta = await result.validarContraseña(contraseña);
 
             if (!contraseñaCorrecta) {
@@ -127,13 +131,16 @@ class UsuarioController {
                 throw error;
             };
 
+
+
             //tomamos los datos del usuario que necesitamos para generar el token
             const payload = {
                 idUsuario: result.idUsuario,
                 nombre: result.nombre,
                 apellido: result.apellido,
                 email: result.email,
-                idRol: result.idRol
+                idRol: result.idRol,
+                habilitado: result.habilitado
             };
 
             //generamos el token 
@@ -244,19 +251,17 @@ class UsuarioController {
 
 
             res.status(200).json({ message: "Usuario actualizados correctamente" });
+
         } catch (error) {
 
             next(error);
             console.log(error)
-            console.log('No se puede modificar el usuario')
         }
     };
 
     me = async (req, res, next) => {
         try {
-
             const { user } = req
-
             res
                 .status(200)
                 .send({ success: true, message: "Usuario", user });
@@ -270,7 +275,6 @@ class UsuarioController {
 
     grantAdminRole = async (req, res, next) => {
         try {
-
             const { idUsuario } = req.body;
 
             const usuario = await Usuario.findOne({
@@ -299,7 +303,7 @@ class UsuarioController {
 
             res
                 .status(200)
-                .send({ success: true, message: `El Usuario con el id ${idUsuario} ahora es Admin`});
+                .send({ success: true, message: `El Usuario con el id ${idUsuario} ahora es Admin` });
 
         } catch (error) {
 
@@ -310,7 +314,6 @@ class UsuarioController {
 
     removeAdminRole = async (req, res, next) => {
         try {
-
             const { idUsuario } = req.body;
 
             const { user } = req
@@ -348,7 +351,51 @@ class UsuarioController {
 
             res
                 .status(200)
-                .send({ success: true, message: `El Usuario con el id ${idUsuario} ya no es Admin`});
+                .send({ success: true, message: `El Usuario con el id ${idUsuario} ya no es Admin` });
+
+        } catch (error) {
+            next(error);
+        }
+    };
+
+    disableUser = async (req, res, next) => {
+        try {
+            const { idUsuario } = req.body;
+            const { user } = req
+
+            if (user.idUsuario == idUsuario) {
+                const error = new Error(`no puedes Deshabilitar tu propio Usuario`);
+                error.status = 400;
+                throw error;
+            }
+
+            const usuario = await Usuario.findOne({
+                where: {
+                    idUsuario,
+                }
+            });
+
+            if (!usuario) {
+                const error = new Error(`No existe Usuario con el id ${idUsuario}`);
+                error.status = 400;
+                throw error;
+            }
+
+            if (usuario.dataValues.habilitado == false) {
+                const error = new Error(`El Usuario con el id ${idUsuario} ya se encuentra Deshabilitado`);
+                error.status = 400;
+                throw error;
+            }
+
+            await Usuario.update({ habilitado: false }, {
+                where: {
+                    idUsuario
+                }
+            });
+
+            res
+                .status(200)
+                .send({ success: true, message: `El Usuario con el id ${idUsuario} ahora se encuentra deshabilitado` });
 
         } catch (error) {
 
@@ -356,6 +403,45 @@ class UsuarioController {
 
         }
     };
+
+    enableUser = async (req, res, next) => {
+        try {
+            const { idUsuario } = req.body;
+
+            const usuario = await Usuario.findOne({
+                where: {
+                    idUsuario,
+                }
+            });
+
+            if (!usuario) {
+                const error = new Error(`No existe Usuario con el id ${idUsuario}`);
+                error.status = 400;
+                throw error;
+            }
+
+            if (usuario.dataValues.habilitado == true) {
+                const error = new Error(`El Usuario con el id ${idUsuario} ya esta habilitado`);
+                error.status = 400;
+                throw error;
+            }
+
+            await Usuario.update({ habilitado: true }, {
+                where: {
+                    idUsuario
+                }
+            });
+
+            res
+                .status(200)
+                .send({ success: true, message: `El Usuario con el id ${idUsuario} se encuentra Habilitado nuevamente`});
+
+        } catch (error) {
+
+            next(error);
+
+        }
+    }
 
 }
 

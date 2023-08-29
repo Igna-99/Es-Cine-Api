@@ -18,9 +18,9 @@ peliculaRoutes.use(validateAccess);
 peliculaRoutes.use(isAdmin);
 
 
-peliculaRoutes.post("/",peliculaController.agregarPelicula);
+peliculaRoutes.post("/create",peliculaController.agregarPelicula);
 
-peliculaRoutes.delete("/",peliculaController.eliminarPelicula);
+peliculaRoutes.post("/delete",peliculaController.eliminarPelicula);
 
 
 export default peliculaRoutes;

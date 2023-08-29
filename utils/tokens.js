@@ -5,7 +5,7 @@ import { secret } from '../config/config.js'
 //genera un token con los datos que se le envien en el payload 
 export const generateToken = (payload) => {
     const token = jwt.sign({payload}, secret, {
-        expiresIn: '2h',
+        expiresIn: '6h',
     });
 
     return token;

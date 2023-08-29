@@ -65,6 +65,11 @@ Usuario.init({
     defaultValue: 2,
   },
 
+  habilitado: {
+    type: DT.BOOLEAN(),
+    defaultValue: true,
+  },
+
   salt: {
     type: DT.STRING(),
   },

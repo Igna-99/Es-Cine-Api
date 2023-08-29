@@ -3,7 +3,6 @@ import { Router } from "express";
 import ReservaController from "../controller/ReservaController.js";
 
 import validateAccess from "../middleware/validateAccess.js"
-import isAdmin from "../middleware/isAdmin.js"
 
 
 const reservaController = new ReservaController();
