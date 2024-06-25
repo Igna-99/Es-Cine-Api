@@ -9,50 +9,50 @@ const seedFuncion = async () => {
                 idPelicula: 569094,
                 sala: 'A',
                 horario: '21:30',
-                fecha: '2023-10-18'
+                fecha: '2024-5-18'
             },
             {
                 idPelicula: 713704,
                 sala: 'B',
                 horario: '21:30',
-                fecha: '2023-10-18'
+                fecha: '2024-5-18'
             },
             {
                 idPelicula: 315162,
                 sala: 'C',
                 horario: '21:30',
-                fecha: '2023-10-18'
+                fecha: '2024-5-18'
             },
             {
                 idPelicula: 447277,
                 sala: 'A',
                 horario: '23:30',
-                fecha: '2023-10-18'
+                fecha: '2024-5-18'
             },
 
             {
                 idPelicula: 713704,
                 sala: 'B',
                 horario: '21:30',
-                fecha: '2023-10-19'
+                fecha: '2024-5-19'
             },
             {
                 idPelicula: 447277,
                 sala: 'C',
                 horario: '21:30',
-                fecha: '2023-10-19'
+                fecha: '2024-5-19'
             },
             {
                 idPelicula: 569094,
                 sala: 'A',
                 horario: '21:30',
-                fecha: '2023-10-19'
+                fecha: '2024-5-19'
             },
             {
                 idPelicula: 315162,
                 sala: 'B',
                 horario: '23:30',
-                fecha: '2023-10-19'
+                fecha: '2024-5-19'
             },
 
         ]);

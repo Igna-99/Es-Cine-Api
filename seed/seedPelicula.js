@@ -25,6 +25,36 @@ const seedPelicula = async () => {
                 idPelicula: 872585
                 //Oppenheimer
             },
+            {
+                idPelicula: 438631
+                //dune
+            },
+            {
+                idPelicula: 693134
+                //dune2
+            },
+            {
+                idPelicula: 1239251
+                //megamente 2
+            },
+            {
+                idPelicula: 823464
+                //godzilla and kong
+            },
+            {
+                idPelicula: 359410
+                //road house
+            },
+            {
+                idPelicula: 792307
+                //Poor Things
+            },
+            {
+                idPelicula: 76600
+                //Avatar 2
+            },
+
+            
         ]);
 
     } catch (error) {

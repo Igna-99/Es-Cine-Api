@@ -13,11 +13,7 @@ import seedPelicula from './seed/seedPelicula.js'
 import seedRol from './seed/seedRol.js'
 import seedUsuario from './seed/seedUsuario.js'
 
-
-
 const app = express();
-
-
 
 const whitelist = ['http://localhost:8080', 'http://localhost:5173']
 
@@ -43,8 +39,6 @@ app.use(cookieParser())
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-
-
 //rutas
 
 app.use(indexRoutes);
@@ -55,8 +49,6 @@ app.use((error, req, res, next) => {
     .status(error.status || 500)
     .send({ success: false, message: error.message });
 });
-
-
 
 let forza = true
 

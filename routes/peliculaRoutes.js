@@ -10,7 +10,7 @@ const peliculaController = new PeliculaController();
 const peliculaRoutes = Router();
 
 
-peliculaRoutes.get("/",peliculaController.traerTodasLasPeliculas);
+peliculaRoutes.get("/all",peliculaController.traerTodasLasPeliculas);
 
 
 //con necesidad de ser admin
