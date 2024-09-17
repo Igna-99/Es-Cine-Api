@@ -4,20 +4,21 @@ import usuarioRoutes from "./usuarioRoutes.js";
 import funcionRoutes from "./funcionRoutes.js";
 import salaRoutes from "./salaRoutes.js";
 import peliculaRoutes from "./peliculaRoutes.js";
+import peliculaPorEstrenar from "./peliculaPorEstrenarRoutes.js";
 import reservaRoutes from "./reservaRoutes.js";
 
+const indexRoutes = Router();
 
-const indexRoutes =  Router()
+indexRoutes.use("/usuario", usuarioRoutes);
 
-indexRoutes.use("/usuario", usuarioRoutes)
+indexRoutes.use("/reserva", reservaRoutes);
 
-indexRoutes.use("/reserva", reservaRoutes)
+indexRoutes.use("/funcion", funcionRoutes);
 
-indexRoutes.use("/funcion", funcionRoutes)
+indexRoutes.use("/sala", salaRoutes);
 
-indexRoutes.use("/sala", salaRoutes)
+indexRoutes.use("/pelicula", peliculaRoutes);
 
-indexRoutes.use("/pelicula", peliculaRoutes)
+indexRoutes.use("/peliculaPorEstrenar", peliculaPorEstrenar);
 
-
-export default indexRoutes
+export default indexRoutes;

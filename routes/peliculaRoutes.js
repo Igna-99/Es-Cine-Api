@@ -10,7 +10,7 @@ const peliculaController = new PeliculaController();
 const peliculaRoutes = Router();
 
 
-peliculaRoutes.get("/all",peliculaController.traerTodasLasPeliculas);
+peliculaRoutes.get("/all",peliculaController.getAllMovies);
 
 
 //con necesidad de ser admin
@@ -18,9 +18,9 @@ peliculaRoutes.use(validateAccess);
 peliculaRoutes.use(isAdmin);
 
 
-peliculaRoutes.post("/create",peliculaController.agregarPelicula);
+peliculaRoutes.post("/create",peliculaController.addMovie);
 
-peliculaRoutes.post("/delete",peliculaController.eliminarPelicula);
+peliculaRoutes.delete("/delete",peliculaController.deleteMovie);
 
 
 export default peliculaRoutes;

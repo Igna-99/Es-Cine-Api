@@ -8,21 +8,21 @@ const seedUsuario = async () => {
         apellido: `Wayne`,
         email: `ImBatman@gmail.com`,
         contraseña: `soyadmin`,
-        idRol: 1
+        idRol: 1,
       },
       {
-        nombre: `Ignacio`,
+        nombre: `Juan Ignacio`,
         apellido: `Varela`,
         email: `ignaciovarela7765@gmail.com`,
         contraseña: `1234`,
       },
       {
-        nombre: `Tomas`,
-        apellido: `Macri`,
+        nombre: `Tomas Sebastian Tomas Sebastian Tomas Sebastian Tomas Sebastian`,
+        apellido: `Macri Macri Macri Macri`,
         email: `tommy11@gmail.com`,
         contraseña: `1234`,
         idRol: 1,
-        habilitado: false
+        habilitado: false,
       },
       {
         nombre: `Martina`,
@@ -48,7 +48,7 @@ const seedUsuario = async () => {
         email: `email2@gmail.com`,
         contraseña: `1234`,
         idRol: 1,
-        habilitado: false
+        habilitado: false,
       },
       {
         nombre: `nomb3`,
@@ -59,10 +59,9 @@ const seedUsuario = async () => {
       {
         nombre: `nomb4`,
         apellido: `apell4`,
-        email: `email4@gmail.com`,
+        email: `emasdasdasdasdasdadasdaail4@gmail.com`,
         contraseña: `1234`,
       },
-      
     ]);
   } catch (error) {
     console.log(error.message);

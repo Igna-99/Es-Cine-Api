@@ -22,6 +22,12 @@ const isAdmin = async (req, res, next) => {
             },
         });
 
+        if (!result) {
+            const error = new Error("Error, usuario no encontrado")
+            error.status = 400;
+            throw error;
+        };
+
         if (result.idRol != 1) {
             const error = new Error("Su Permiso de Administrador fue Revocado recientemente, Porfavor inicie sesion nuevamente")
             error.status = 400;
