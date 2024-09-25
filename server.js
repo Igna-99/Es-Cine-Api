@@ -16,24 +16,12 @@ import seedUsuario from "./seed/seedUsuario.js";
 
 const app = express();
 
-const whitelist = ["http://localhost:8080", "http://localhost:5173"];
 
-const corsOptions = {
-  origin: (origin, callback) => {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error());
-    }
-  },
-  credentials: true,
-};
-
-const corsOptions2 = { credentials: true, origin: "http://localhost:5173" };
+const corsOptions = { credentials: true, origin: "http://localhost:5173" };
 
 //middleweres
 
-app.use(cors(corsOptions2));
+app.use(cors(corsOptions));
 
 app.use(cookieParser());
 
@@ -51,7 +39,7 @@ app.use((error, req, res, next) => {
     .send({ success: false, message: error.message });
 });
 
-let force = true;
+let force = false;
 
 connection
   .sync({ force })
@@ -65,9 +53,10 @@ connection
     if (force) {
       await seedRol()
       await seedUsuario()
-      await seedSala()
       await seedPelicula()
+      await seedSala()
+      await seedSala()
       await seedPeliculaPorEstrenar()
-      await seedFuncion()
+      // await seedFuncion()
     }
   });

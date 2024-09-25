@@ -8,3 +8,4 @@ export const host = process.env.DB_HOST;
 export const dialect = process.env.DB_DIALECT;
 export const port = process.env.DB_PORT;
 export const secret = process.env.JWT_SECRET;
+export const dialectOptions = process.env.DIALECT_OPTIONS;

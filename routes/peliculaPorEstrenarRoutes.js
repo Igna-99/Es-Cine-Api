@@ -22,7 +22,7 @@ peliculaRoutes.post("/create",peliculaPorEstrenarController.addMovie);
 
 peliculaRoutes.post("/release",peliculaPorEstrenarController.releaseMovie);
 
-peliculaRoutes.delete("/delete",peliculaPorEstrenarController.deleteMovie);
+peliculaRoutes.post("/delete",peliculaPorEstrenarController.deleteMovie);
 
 
 export default peliculaRoutes;

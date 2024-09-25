@@ -9,11 +9,26 @@ import {
   port,
 } from "../config/config.js";
 
-const connection = new Sequelize(dbName, username, password, {
+
+const config = {
   host,
   dialect,
   port,
-});
+};
+
+if (dialect === 'postgres') {
+  config.dialectOptions = {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false,
+    },
+  };
+}
+
+
+const connection = new Sequelize(dbName, username, password, config);
+
+
 
 try {
   await connection.authenticate();
