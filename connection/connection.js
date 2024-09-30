@@ -14,6 +14,7 @@ const config = {
   host,
   dialect,
   port,
+  logging: console.log,
 };
 
 if (dialect === 'postgres') {
@@ -23,6 +24,7 @@ if (dialect === 'postgres') {
       rejectUnauthorized: false,
     },
   };
+  
 }
 
 

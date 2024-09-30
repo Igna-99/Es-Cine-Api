@@ -15,6 +15,7 @@ class UsuarioController {
                         attributes: ["rol"],
                     },
                 ],
+                order:[['idUsuario', 'ASC']],
             });
 
             if (result.length == 0) {

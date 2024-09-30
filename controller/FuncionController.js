@@ -1,285 +1,302 @@
 import { Funcion, Asiento } from "../models/index.js";
 import { separateByDate } from "../utils/separateByDate.js";
 import { validDate, validTime } from "../utils/validateDateAndTime.js";
+import connection from "../connection/connection.js";
+import { Transaction } from "sequelize";
 
 class FuncionController {
+  constructor() {}
 
-    constructor() { }
+  traerTodasLasFunciones = async (req, res, next) => {
+    try {
+      const result = await Funcion.findAll({
+        attributes: ["idFuncion", "sala", "horario", "fecha", "idPelicula"],
+      });
 
-    traerTodasLasFunciones = async (req, res, next) => {
-        try {
-            const result = await Funcion.findAll({
-                attributes: ['idFuncion', 'sala', 'horario', 'fecha', 'idPelicula']
-            });
+      if (result.length == 0) {
+        const error = new Error("no hay Funciones cargadas");
+        error.status = 400;
+        throw error;
+      }
 
-            if (result.length == 0) {
-                const error = new Error("no hay Funciones cargadas");
-                error.status = 400
-                throw error
-            }
+      let funcionesPorFecha = separateByDate(result);
 
-            let funcionesPorFecha = separateByDate(result)
+      res
+        .status(200)
+        .send({ success: true, message: "Funciones:", funcionesPorFecha });
+    } catch (error) {
+      next(error);
+    }
+  };
 
-            res
-                .status(200)
-                .send({ success: true, message: "Funciones:", funcionesPorFecha })
+  traerFuncionPorId = async (req, res, next) => {
+    try {
+      const { idFuncion } = req.params;
 
-        } catch (error) {
-            next(error)
-        }
-    };
+      const result = await Funcion.findOne({
+        attributes: ["idFuncion", "sala", "horario", "fecha", "idPelicula"],
+        include: [
+          {
+            model: Asiento,
+            attributes: ["idAsiento"],
+          },
+        ],
+        where: {
+          idFuncion,
+        },
+      });
 
-    traerFuncionPorId = async (req, res, next) => {
-        try {
+      if (!result) {
+        const error = new Error(`La Funcion ${idFuncion} no existe.`);
+        error.status = 400;
+        throw error;
+      }
 
-            const { idFuncion } = req.params;
+      res
+        .status(200)
+        .send({ success: true, message: `Funcion ${idFuncion}`, result });
+    } catch (error) {
+      next(error);
+    }
+  };
 
-            const result = await Funcion.findOne({
-                attributes: ['idFuncion', 'sala', 'horario', 'fecha', 'idPelicula'],
-                include: [
-                    {
-                        model: Asiento,
-                        attributes:[ 'idAsiento' ],
-                    },
-                ],
-                where:{
-                    idFuncion
-                }
-            });
+  traerFuncionesDeUnaSala = async (req, res, next) => {
+    try {
+      const { sala } = req.params;
 
-            if (!result) {
-                const error = new Error(`La Funcion ${idFuncion} no existe.`);
-                error.status = 400
-                throw error
-            }
+      const result = await Funcion.findAll({
+        attributes: ["idFuncion", "sala", "horario", "fecha", "idPelicula"],
+        where: {
+          sala,
+        },
+      });
 
-            res
-                .status(200)
-                .send({ success: true, message: `Funcion ${idFuncion}`, result })
+      if (result.length == 0) {
+        const error = new Error(
+          `No hay Funciones Cargadas para la Sala ${sala}`
+        );
+        error.status = 400;
+        throw error;
+      }
 
-        } catch (error) {
-            next(error)
-        }
-    };
+      let funcionesPorFecha = separateByDate(result);
 
-    traerFuncionesDeUnaSala = async (req, res, next) => {
-        try {
-            const { sala } = req.params;
+      res.status(200).send({
+        success: true,
+        message: `Funciones de la Sala ${sala}:`,
+        funcionesPorFecha,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
 
-            const result = await Funcion.findAll({
-                attributes: ['idFuncion', 'sala', 'horario', 'fecha', 'idPelicula'],
-                where: {
-                    sala
-                },
-            });
+  traerFuncionesDeUnaFecha = async (req, res, next) => {
+    try {
+      const { fecha } = req.params;
 
-            if (result.length == 0) {
-                const error = new Error(`No hay Funciones Cargadas para la Sala ${sala}`);
-                error.status = 400
-                throw error
-            }
+      if (!validDate(fecha)) {
+        const error = new Error(
+          `el Formato de la Fecha es incorrecto ${fecha}`
+        );
+        error.status = 400;
+        throw error;
+      }
 
-            let funcionesPorFecha = separateByDate(result)
+      const result = await Funcion.findAll({
+        attributes: ["idFuncion", "sala", "horario", "fecha", "idPelicula"],
+        where: {
+          fecha,
+        },
+      });
 
-            res
-                .status(200)
-                .send({ success: true, message: `Funciones de la Sala ${sala}:`, funcionesPorFecha })
+      if (result.length == 0) {
+        const error = new Error(`No hay Funciones Cargadas para el ${fecha}`);
+        error.status = 400;
+        throw error;
+      }
 
-        } catch (error) {
-            next(error)
-        }
-    };
+      res
+        .status(200)
+        .send({ success: true, message: `Funciones del ${fecha}`, result });
+    } catch (error) {
+      next(error);
+    }
+  };
 
-    traerFuncionesDeUnaFecha = async (req, res, next) => {
-        try {
-            const { fecha } = req.params;
+  traerFuncionesDeUnHorario = async (req, res, next) => {
+    try {
+      const { fecha } = req.params;
 
-            if (!validDate(fecha)) {
-                const error = new Error(`el Formato de la Fecha es incorrecto ${fecha}`);
-                error.status = 400;
-                throw error;
+      const result = await Funcion.findAll({
+        attributes: ["idFuncion", "sala", "horario", "fecha", "idPelicula"],
+        where: {
+          horario,
+        },
+      });
 
-            }
+      if (result.length == 0) {
+        const error = new Error(
+          `No hay Funciones Cargadas para el horario ${horario} del ${fecha}`
+        );
+        error.status = 400;
+        throw error;
+      }
 
-            const result = await Funcion.findAll({
-                attributes: ['idFuncion', 'sala', 'horario', 'fecha', 'idPelicula'],
-                where: {
-                    fecha,
-                },
-            });
+      let funcionesPorFecha = separateByDate(result);
 
-            if (result.length == 0) {
-                const error = new Error(`No hay Funciones Cargadas para el ${fecha}`);
-                error.status = 400
-                throw error
-            }
+      res.status(200).send({
+        success: true,
+        message: ` Funciones a las ${horario} del ${fecha}`,
+        funcionesPorFecha,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
 
-            res
-                .status(200)
-                .send({ success: true, message: `Funciones del ${fecha}`, result })
+  traerFuncionesDeUnaPelicula = async (req, res, next) => {
+    try {
+      const { idPelicula } = req.params;
 
-        } catch (error) {
-            next(error)
-        }
-    };
+      const result = await Funcion.findAll({
+        attributes: ["idFuncion", "sala", "horario", "fecha", "idPelicula"],
+        where: {
+          idPelicula,
+        },
+      });
 
-    traerFuncionesDeUnHorario = async (req, res, next) => {
-        try {
-            const { fecha } = req.params;
+      if (result.length == 0) {
+        const error = new Error("No Funciones Programadas para esa Pelicula ");
+        error.status = 400;
+        throw error;
+      }
 
-            const result = await Funcion.findAll({
-                attributes: ['idFuncion', 'sala', 'horario', 'fecha', 'idPelicula'],
-                where: {
-                    horario,
-                },
-            });
+      let funcionesPorFecha = separateByDate(result);
 
-            if (result.length == 0) {
-                const error = new Error(`No hay Funciones Cargadas para el horario ${horario} del ${fecha}`);
-                error.status = 400
-                throw error
-            }
+      res.status(200).send({
+        success: true,
+        message: "Funciones para la pelicula con ID " + idPelicula + ":",
+        funcionesPorFecha,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
 
-            let funcionesPorFecha = separateByDate(result)
+  traerCantidadFuncionesDeUnaPelicula = async (req, res, next) => {
+    try {
+      const { idPelicula } = req.params;
 
+      const result = await Funcion.count({
+        where: {
+          idPelicula,
+        },
+      });
 
-            res
-                .status(200)
-                .send({ success: true, message: ` Funciones a las ${horario} del ${fecha}`, funcionesPorFecha })
+      res.status(200).send({
+        success: true,
+        message: `Cantidad de Funciones Programadas para la Pelicula ${idPelicula}:`,
+        result,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
 
-        } catch (error) {
-            next(error)
-        }
-    };
+  crearFuncion = async (req, res, next) => {
+    const { sala, horario, fecha, idPelicula } = req.body;
+    const t = await connection.transaction({
+      isolationLevel: Transaction.ISOLATION_LEVELS.SERIALIZABLE,
+    });
 
-    traerFuncionesDeUnaPelicula = async (req, res, next) => {
-        try {
-            const { idPelicula } = req.params;
+    try {
+      if (!validTime(horario)) {
+        const error = new Error(
+          `el Formato de la Hora es incorrecto ${horario}`
+        );
+        error.status = 400;
+        throw error;
+      }
 
-            const result = await Funcion.findAll({
-                attributes: ['idFuncion', 'sala', 'horario', 'fecha', 'idPelicula'],
-                where: {
-                    idPelicula
-                },
-            });
+      if (!validDate(fecha)) {
+        const error = new Error(
+          `el Formato de la Fecha es incorrecto ${fecha}`
+        );
+        error.status = 400;
+        throw error;
+      }
 
-            if (result.length == 0) {
-                const error = new Error("No Funciones Programadas para esa Pelicula ");
-                error.status = 400
-                throw error
-            }
+      const yaHayFuncionProgramada = await Funcion.findOne({
+        where: {
+          sala,
+          horario,
+          fecha,
+        },
+        transaction: t,
+      });
+      if (yaHayFuncionProgramada != null) {
+        const error = new Error(
+          `En el dia ${fecha}, la Sala ${sala} ya cuenta con una Funcion en el horario ${horario} Hs`
+        );
+        error.status = 400;
+        throw error;
+      }
 
-            let funcionesPorFecha = separateByDate(result)
+      const result = await Funcion.create(
+        {
+          sala,
+          horario,
+          fecha,
+          idPelicula,
+        },
+        { transaction: t }
+      );
 
+      if (!result) {
+        const error = new Error("Error al crear la Funcion");
+        error.status = 400;
+        throw error;
+      }
 
-            res
-                .status(200)
-                .send({ success: true, message: "Funciones para la pelicula con ID " + idPelicula + ":", funcionesPorFecha })
+      await t.commit();
 
-        } catch (error) {
-            next(error)
-        }
-    };
+      res.status(200).send({
+        success: true,
+        message: "Funcion Creada Exitosamente",
+        result,
+      });
+    } catch (error) {
+      await t.rollback();
+      next(error);
+    }
+  };
 
-    traerCantidadFuncionesDeUnaPelicula = async (req, res, next) => {
-        try {
-            const { idPelicula } = req.params;
+  borrarFuncion = async (req, res, next) => {
+    try {
+      const { idFuncion } = req.body;
 
-            const result = await Funcion.count({
-                where: {
-                    idPelicula
-                },
-            });
+      const result = await Funcion.destroy({
+        where: {
+          idFuncion,
+        },
+      });
 
-            res
-                .status(200)
-                .send({ success: true, message: `Cantidad de Funciones Programadas para la Pelicula ${idPelicula}:`, result })
+      if (!result) {
+        const error = new Error("Error al borrar la Funcion");
+        error.status = 400;
+        throw error;
+      }
 
-        } catch (error) {
-            next(error)
-        }
-    };
-
-    crearFuncion = async (req, res, next) => {
-        try {
-
-            const { sala, horario, fecha, idPelicula } = req.body;
-
-            if (!validTime(horario)) {
-                const error = new Error(`el Formato de la Hora es incorrecto ${horario}`);
-                error.status = 400;
-                throw error;
-
-            }
-
-            if (!validDate(fecha)) {
-                const error = new Error(`el Formato de la Fecha es incorrecto ${fecha}`);
-                error.status = 400;
-                throw error;
-
-            }
-
-            const yaHayFuncionProgramada = await Funcion.findOne({
-                where: {
-                    sala,
-                    horario,
-                    fecha,
-                }
-            });
-
-            if (yaHayFuncionProgramada != null) {
-                const error = new Error(`En el dia ${fecha}, la Sala ${sala} ya cuenta con una Funcion en el horario ${horario} Hs`);
-                error.status = 400;
-                throw error;
-            }
-
-            const result = await Funcion.create({
-                sala,
-                horario,
-                fecha,
-                idPelicula,
-            });
-
-            if (!result) {
-                const error = new Error("Error al crear la Funcion");
-                error.status = 400;
-                throw error;
-            }
-
-            res
-                .status(200)
-                .send({ success: true, message: "Funcion Creada Exitosamente", result });
-
-        } catch (error) {
-            next(error);
-        }
-    };
-
-    borrarFuncion = async (req, res, next) => {
-        try {
-            const { idFuncion } = req.body;
-
-            const result = await Funcion.destroy({
-                where: {
-                    idFuncion
-                }
-            });
-
-            if (!result) {
-                const error = new Error("Error al borrar la Funcion");
-                error.status = 400;
-                throw error;
-            }
-
-            res
-                .status(200)
-                .send({ success: true, message: "Funcion Borrada Exitosamente", result });
-
-        } catch (error) {
-            next(error);
-        }
-    };
-
-};
+      res.status(200).send({
+        success: true,
+        message: "Funcion Borrada Exitosamente",
+        result,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+}
 
 export default FuncionController;

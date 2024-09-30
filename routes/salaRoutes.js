@@ -20,7 +20,7 @@ salaRoutes.use(validateAccess);
 salaRoutes.use(isAdmin);
 
 
-salaRoutes.post("/", salaController.crearSala);
+salaRoutes.post("/create", salaController.crearSala);
 
 
 

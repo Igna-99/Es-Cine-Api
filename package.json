@@ -6,7 +6,6 @@
   "type": "module",
   "scripts": {
     "dev": "node --watch .",
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
   "keywords": [],

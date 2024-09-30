@@ -39,7 +39,7 @@ app.use((error, req, res, next) => {
     .send({ success: false, message: error.message });
 });
 
-let force = false;
+let force = true;
 
 connection
   .sync({ force })
@@ -55,8 +55,7 @@ connection
       await seedUsuario()
       await seedPelicula()
       await seedSala()
-      await seedSala()
       await seedPeliculaPorEstrenar()
-      // await seedFuncion()
+      await seedFuncion()
     }
   });

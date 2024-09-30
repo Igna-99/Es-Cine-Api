@@ -20,7 +20,7 @@ peliculaRoutes.use(isAdmin);
 
 peliculaRoutes.post("/create",peliculaController.addMovie);
 
-peliculaRoutes.delete("/delete",peliculaController.deleteMovie);
+peliculaRoutes.post("/delete",peliculaController.deleteMovie);
 
 
 export default peliculaRoutes;

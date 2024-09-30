@@ -39,7 +39,9 @@ class PeliculaPorEstrenarController {
         idPelicula
       );
       if (movieAlreadyOnUpcoming) {
-        const error = new Error("La pelicula ya se encuentra en 'por estrenar'");
+        const error = new Error(
+          "La pelicula ya se encuentra en 'por estrenar'"
+        );
         error.status = 400;
         throw error;
       }
@@ -97,7 +99,7 @@ class PeliculaPorEstrenarController {
       });
     } catch (error) {
       if (!error.status) {
-        error.status = 500; // 500: Error interno del servidor
+        error.status = 500;
         error.message = "Error interno del servidor";
       }
       next(error);
@@ -106,7 +108,7 @@ class PeliculaPorEstrenarController {
 
   releaseMovie = async (req, res, next) => {
     const { idPelicula } = req.body;
-    const transaction = await connection.transaction();
+    const t = await connection.transaction();
 
     try {
       if (!idPelicula) {
@@ -115,10 +117,8 @@ class PeliculaPorEstrenarController {
         throw error;
       }
 
-      //Comprobamos que la pelicula no este en cartelera
-
       const movieAlreadyOnTheaters = await Pelicula.findByPk(idPelicula, {
-        transaction,
+        transaction: t,
       });
       if (movieAlreadyOnTheaters) {
         const error = new Error(`La pelicula ya se encuentra en cartelera`);
@@ -126,10 +126,8 @@ class PeliculaPorEstrenarController {
         throw error;
       }
 
-      //Comprobamos que la pelicula este en por estrenar
-
       const movieToRelease = await PeliculaPorEstrenar.findByPk(idPelicula, {
-        transaction,
+        transaction: t,
       });
       if (!movieToRelease) {
         const error = new Error(
@@ -139,13 +137,9 @@ class PeliculaPorEstrenarController {
         throw error;
       }
 
-      //Eliminamos la pelicula de la lista de por estrenar
-
       const movieDeleted = await PeliculaPorEstrenar.destroy({
-        where: {
-          idPelicula,
-        },
-        transaction,
+        where: { idPelicula },
+        transaction: t,
       });
       if (!movieDeleted) {
         const error = new Error(`Error al eliminar la pelicula`);
@@ -153,26 +147,24 @@ class PeliculaPorEstrenarController {
         throw error;
       }
 
-      //Agregamos la pelicula a la cartelera
-
-      const movieReleased = await Pelicula.create({
-        idPelicula,
-        transaction,
-      });
+      const movieReleased = await Pelicula.create(
+        { idPelicula },
+        { transaction: t }
+      );
       if (!movieReleased) {
         const error = new Error(`Error al crear la pelicula`);
         error.status = 500;
         throw error;
       }
 
-      await transaction.commit();
+      await t.commit();
 
       res.status(200).send({
         success: true,
         message: `La Pelicula con ID ${idPelicula} se a estrenado correctamente`,
       });
     } catch (error) {
-      await transaction.rollback();
+      await t.rollback();
       next(error);
     }
   };

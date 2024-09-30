@@ -51,24 +51,25 @@ Funcion.init({
 
 // cabe resaltar que es necesario que la sala en cuestión tenga sus Asientos cargados,
 //, pero como sala también tiene un 'Trigger?' similar, todas las salas deberían tener sus asientos
-Funcion.afterCreate(async (funcion) => {
+Funcion.afterCreate(async (funcion, options) => {
 
-    let aisientosDeSalaSeleccionada = await Asiento.findAll({
-        where: {
-            sala: funcion.sala
+    try {
+        let asientosDeSalaSeleccionada = await Asiento.findAll({
+            where: { sala: funcion.sala },
+            transaction: options.transaction
+        });
+
+        for (let asiento of asientosDeSalaSeleccionada) {
+            await AsientosDeFuncion.create({
+                idFuncion: funcion.idFuncion,
+                idAsiento: asiento.idAsiento,
+                numeroAsiento: asiento.numeroAsiento,
+            }, { transaction: options.transaction });
         }
-    });
-
-    for (let index = 0; index < aisientosDeSalaSeleccionada.length; index++) {
-        const asiento = aisientosDeSalaSeleccionada[index];
-
-        await AsientosDeFuncion.create({
-            idFuncion: funcion.idFuncion,
-            idAsiento: asiento.idAsiento,
-            numeroAsiento: asiento.numeroAsiento,
-        })
+    } catch (error) {
+        console.error('Error on afterCreate:', error);
+        throw error;  // Relanza el error para que se maneje adecuadamente
     }
-
 });
 
 // lo mismo que el anterio, pero para BulkCreate
